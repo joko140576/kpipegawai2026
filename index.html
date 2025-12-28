@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -19,6 +20,21 @@ body { background:#f4f6f9; }
     height:100%;
 }
 .slider-value { font-weight:bold; color:#0d6efd; }
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #printArea, #printArea * {
+    visibility: visible;
+  }
+  #printArea {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+}
+
 </style>
 </head>
 
@@ -79,7 +95,7 @@ body { background:#f4f6f9; }
  <!-- ================= NILAI PERSONALITY (SIAP) ================= -->
     <div class="card mb-4">
         <div class="card-header bg-primary text-white">
-            <i class="fas fa-brain"></i> Nilai Personality (SIAP)
+            <i class="fas fa-brain"></i> Nilai Personality (SIAP) Bobot 20%
         </div>
         <div class="card-body">
 
@@ -176,7 +192,7 @@ body { background:#f4f6f9; }
 <!-- ================= KPI TARGET KERJA ================= -->
 <div class="card mb-4">
     <div class="card-header bg-success text-white">
-        <i class="bi bi-clipboard-check"></i> KPI Target Kerja
+        <i class="bi bi-clipboard-check"></i> KPI Target Kerja Bobot 50%
     </div>
     <div class="card-body">
 
@@ -260,7 +276,7 @@ body { background:#f4f6f9; }
 <div class="card">
 <div class="card-header bg-warning">
    
-<i class="bi bi-calendar-check"></i> Absensi (HRIS)
+<i class="bi bi-calendar-check"></i> Absensi (HRIS) Bobot 15%
 </div>
 <div class="card-body">
      <p> Berdasarkan pada Data Aplikasi HRIS Divisi HCC</p>
@@ -275,7 +291,7 @@ body { background:#f4f6f9; }
 <div class="card">
 <div class="card-header bg-info text-white">
     
-<i class="bi bi-bar-chart"></i> Workload Analysis
+<i class="bi bi-bar-chart"></i> Workload Analysis Bobot 15%
 </div>
 <div class="card-body">
     <p> Berdasarkan pada Data TimeCard Divisi HCC</p>
@@ -288,9 +304,67 @@ body { background:#f4f6f9; }
 
 </div>
 
-<button class="btn btn-dark btn-lg w-100" onclick="saveData()">
-<i class="fas fa-save"></i> Simpan KPI
-</button>
+<div class="row g-2 mb-4">
+
+  <div class="col-md-4 col-12">
+    <button class="btn btn-success w-100" onclick="saveData()">
+      <i class="fas fa-save me-1"></i> Simpan KPI
+    </button>
+  </div>
+
+  <div class="col-md-4 col-12">
+    <button class="btn btn-danger w-100" onclick="printPDF()">
+      <i class="bi bi-printer-fill me-1"></i> Cetak PDF
+    </button>
+  </div>
+
+  <div class="col-md-4 col-12">
+    <button class="btn btn-primary w-100" onclick="resetForm()">
+      <i class="bi bi-arrow-clockwise me-1"></i> Refresh
+    </button>
+  </div>
+
+</div>
+
+
+<hr class="my-4">
+
+<div id="printArea" class="card d-none">
+  <div class="card-header bg-secondary text-white">
+    <i class="bi bi-file-earmark-text"></i> Ringkasan KPI Pegawai
+  </div>
+  <div class="card-body">
+
+    <h5 class="mb-3">📌 Biodata Pegawai</h5>
+    <table class="table table-sm">
+      <tr><th>Nama</th><td id="pNama"></td></tr>
+      <tr><th>NPP</th><td id="pNpp"></td></tr>
+      <tr><th>Divisi</th><td id="pDivisi"></td></tr>
+      <tr><th>Unit</th><td id="pUnit"></td></tr>
+      <tr><th>Jabatan</th><td id="pJabatan"></td></tr>
+    </table>
+
+    <h5 class="mt-4">📊 Nilai KPI</h5>
+    <table class="table table-bordered">
+      <tr><th>Solid</th><td id="pSolid"></td></tr>
+      <tr><th>Integritas</th><td id="pIntegritas"></td></tr>
+      <tr><th>Adaptif</th><td id="pAdaptif"></td></tr>
+      <tr><th>Profesional</th><td id="pProfesional"></td></tr>
+      <tr><th>Target Kerja Utama</th><td id="pTargetUtama"></td></tr>
+      <tr><th>Target Proses Kerja</th><td id="pTargetProses"></td></tr>
+      <tr><th>Absensi</th><td id="pAbsensi"></td></tr>
+      <tr><th>Workload</th><td id="pWorkload"></td></tr>
+    </table>
+
+    <h4 class="text-center mt-4">
+      🎯 NILAI TOTAL KPI :
+      <span class="badge bg-success fs-5" id="pTotal"></span>
+    </h4>
+
+  </div>
+</div>
+
+
 
 </div>
 
@@ -451,7 +525,102 @@ function saveData(){
         console.error(err);
     });
 }
+
+
+function hitungTotal() {
+
+  // Ambil nilai
+  const solid = Number(solidNum.value || 0);
+  const integritas = Number(integrity.value || 0);
+  const adaptif = Number(adaptifNum.value || 0);
+  const profesional = Number(profesionalNum.value || 0);
+
+  const targetUtama = Number(targetUtamaNum.value || 0);
+  const targetProses = Number(targetProsesNum.value || 0);
+
+  const absensi = Number(absensiNum.value || 0);
+  const workload = Number(workloadNum.value || 0);
+
+  // Hitung rata-rata
+  const nilaiBudaya = ((solid + integritas + adaptif + profesional) / 4) * 0.20;
+  const nilaiTarget = ((targetUtama + targetProses) / 2) * 0.50;
+  const nilaiPersonal = ((absensi + workload) / 2) * 0.30;
+
+  return (nilaiBudaya + nilaiTarget + nilaiPersonal).toFixed(2);
+}
+
+function printPDF() {
+
+  // Tampilkan area cetak
+  document.getElementById("printArea").classList.remove("d-none");
+
+  // Isi biodata
+  pNama.innerText = nama.value;
+  pNpp.innerText = npp.value;
+  pDivisi.innerText = divisi.value;
+  pUnit.innerText = unit.value;
+  pJabatan.innerText = jabatan.value;
+
+  // Isi nilai
+  pSolid.innerText = solid.value;
+  pIntegritas.innerText = integrity.value;
+  pAdaptif.innerText = adaptif.value;
+  pProfesional.innerText = profesional.value;
+  pTargetUtama.innerText = targetUtamaNum.value;
+  pTargetProses.innerText = targetProsesNum.value;
+  pAbsensi.innerText = absensiNum.value;
+  pWorkload.innerText = workloadNum.value;
+
+  // Total
+  pTotal.innerText = hitungTotal();
+
+  // Cetak
+  window.print();
+}
+
+
+function resetForm(){
+
+  // ===== DATA PEGAWAI =====
+  nama.value = "";
+  npp.value = "";
+  divisi.value = "";
+  unit.value = "";
+  jabatan.value = "";
+
+  // ===== NILAI SIAP =====
+  const resetPair = (num, range, view) => {
+    num.value = 0;
+    range.value = 0;
+    view.innerText = "";
+  };
+
+  resetPair(solidNum, solidRange, vSolid);
+  resetPair(integrityNum, integrityRange, vIntegrity);
+  resetPair(adaptifNum, adaptifRange, vAdaptif);
+  resetPair(profesionalNum, profesionalRange, vProfesional);
+
+  // ===== TARGET KERJA =====
+  resetPair(targetUtamaNum, targetUtamaRange, vTargetUtama);
+  resetPair(targetProsesNum, targetProsesRange, vTargetProses);
+
+  // ===== PERSONAL =====
+  resetPair(absensiNum, absensiRange, vAbsensi);
+  resetPair(workloadNum, workloadRange, vWorkload);
+
+  // ===== SEMBUNYIKAN AREA CETAK =====
+  const printArea = document.getElementById("printArea");
+  if(printArea){
+    printArea.classList.add("d-none");
+  }
+
+  // ===== SCROLL KE ATAS =====
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
 </script>
+
+
 
 
 </body>
