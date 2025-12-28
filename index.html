@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Key Performance Indicator</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+<style>
+body { background:#f4f6f9; }
+.card-header { font-weight:600; }
+.desc-box {
+    font-size:14px;
+    background:#f8f9fa;
+    border-left:4px solid #0d6efd;
+    padding:12px;
+    height:100%;
+}
+.slider-value { font-weight:bold; color:#0d6efd; }
+</style>
+</head>
+
+<body>
+
+<div class="container my-4">
+
+<h3 class="text-center mb-4">
+<i class="fas fa-chart-line"></i> Key Performance Indicator Pegawai PT SSI
+</h3>
+
+<!-- ================= DATA PEGAWAI ================= -->
+<div class="card mb-4">
+<div class="card-header bg-dark text-white">
+<i class="fas fa-user"></i> Data Pegawai
+</div>
+<div class="card-body">
+<div class="row">
+
+<div class="col-md-6 mb-3">
+<label>Nama Pegawai</label>
+<input type="text" id="nama" class="form-control">
+</div>
+
+<div class="col-md-6 mb-3">
+<label>NPP</label>
+<input type="text" id="npp" class="form-control">
+</div>
+
+<div class="col-md-4 mb-3">
+<label>Divisi</label>
+<select id="divisi" class="form-select">
+<option value="">-- Pilih Divisi --</option>
+<option>INA</option><option>HCC</option><option>PLM</option>
+<option>OPR1</option><option>OPR2</option><option>OPS</option>
+<option>FRM</option><option>MBS</option><option>SBD</option><option>CSI</option>
+</select>
+</div>
+
+<div class="col-md-4 mb-3">
+<label>Unit</label>
+<input type="text" id="unit" class="form-control">
+</div>
+
+<div class="col-md-4 mb-3">
+<label>Jabatan</label>
+<select id="jabatan" class="form-select">
+<option value="">-- Pilih Jabatan --</option>
+<option>GM</option><option>CEO Region</option><option>Deputy</option>
+<option>Senior Manager</option><option>Manager</option>
+<option>Asmen</option><option>Staf</option>
+</select>
+</div>
+
+</div>
+</div>
+</div>
+ <!-- ================= NILAI PERSONALITY (SIAP) ================= -->
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <i class="fas fa-brain"></i> Nilai Personality (SIAP)
+        </div>
+        <div class="card-body">
+
+            <!-- SOLID -->
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="desc-box">
+                        <b>Solid</b><br>
+                        Budaya kerja yang menekankan kebersamaan, kekompakan,
+                        dan saling mendukung untuk tujuan bersama.
+                        <br>
+                        <button class="btn btn-outline-primary btn-sm mt-2">
+                            <i class="bi bi-people-fill me-1"></i> Kriteria Penilaian SOLID
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label>Nilai Solid (0–100)</label>
+                    <input type="number" id="solid" class="form-control mb-2" min="0" max="100">
+                    <input type="range" id="solidRange" class="form-range" min="0" max="100">
+                    <span class="slider-value" id="vSolid"></span>
+                </div>
+            </div>
+
+            <!-- INTEGRITAS -->
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="desc-box">
+                        <b>Integritas</b><br>
+                        Konsistensi antara perkataan, tindakan, dan nilai moral
+                        yang menjunjung kejujuran dan tanggung jawab.
+                        <br>
+                        <button class="btn btn-outline-success btn-sm mt-2">
+                            <i class="bi bi-shield-check me-1"></i> Kriteria Penilaian Integritas
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label>Nilai Integritas (0–100)</label>
+                    <input type="number" id="integrity" class="form-control mb-2" min="0" max="100">
+                    <input type="range" id="integrityRange" class="form-range" min="0" max="100">
+                    <span class="slider-value" id="vIntegrity"></span>
+                </div>
+            </div>
+
+            <!-- ADAPTIF -->
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="desc-box">
+                        <b>Adaptif</b><br>
+                        Kemampuan menyesuaikan diri secara cepat dan tepat
+                        terhadap perubahan sistem, teknologi, dan kebijakan.
+                        <br>
+                        <button class="btn btn-outline-warning btn-sm mt-2">
+                            <i class="bi bi-arrow-repeat me-1"></i> Kriteria Penilaian Adaptif
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label>Nilai Adaptif (0–100)</label>
+                    <input type="number" id="adaptif" class="form-control mb-2" min="0" max="100">
+                    <input type="range" id="adaptifRange" class="form-range" min="0" max="100">
+                    <span class="slider-value" id="vAdaptif"></span>
+                </div>
+            </div>
+
+            <!-- PROFESIONAL -->
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="desc-box">
+                        <b>Profesional</b><br>
+                        Menunjukkan kompetensi, kualitas kerja tinggi,
+                        dan tanggung jawab sesuai peran.
+                        <br>
+                        <button class="btn btn-outline-dark btn-sm mt-2">
+                            <i class="bi bi-briefcase-fill me-1"></i> Kriteria Penilaian Profesional
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label>Nilai Profesional (0–100)</label>
+                    <input type="number" id="profesional" class="form-control mb-2" min="0" max="100">
+                    <input type="range" id="profesionalRange" class="form-range" min="0" max="100">
+                    <span class="slider-value" id="vProfesional"></span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+<!-- ================= KPI TARGET KERJA ================= -->
+<div class="card mb-4">
+    <div class="card-header bg-success text-white">
+        <i class="bi bi-clipboard-check"></i> KPI Target Kerja
+    </div>
+    <div class="card-body">
+
+        <div class="row">
+
+            <!-- ================= KOLOM KIRI : PENJELASAN ================= -->
+            <div class="col-md-6 mb-3">
+                <div class="desc-box h-100">
+
+                    <!-- A. KPI TARGET KERJA -->
+                    <h6 class="fw-bold text-success">
+                        <i class="bi bi-bullseye"></i> A. KPI Target Kerja (Hasil Utama)
+                    </h6>
+                    <p class="small text-muted">
+                        Mengukur output atau hasil utama dari pekerjaan pegawai.
+                    </p>
+                    <ul class="small">
+                        <li>Pencapaian target kerja (%)</li>
+                        <li>Ketepatan waktu penyelesaian</li>
+                        <li>Akurasi hasil kerja</li>
+                        <li>Produktivitas kerja</li>
+                    </ul>
+
+                    <hr>
+
+                    <!-- B. KPI PROSES KERJA -->
+                    <h6 class="fw-bold text-primary">
+                        <i class="bi bi-gear-fill"></i> B. KPI Proses Kerja
+                    </h6>
+                    <p class="small text-muted">
+                        Mengukur cara dan kedisiplinan dalam menjalankan proses kerja.
+                    </p>
+                    <ul class="small">
+                        <li>Kepatuhan terhadap SOP</li>
+                        <li>Kualitas dokumentasi</li>
+                        <li>Efisiensi proses kerja</li>
+                    </ul>
+
+                </div>
+            </div>
+
+            <!-- ================= KOLOM KANAN : PENILAIAN ================= -->
+            <div class="col-md-6">
+
+                <!-- TARGET KERJA UTAMA -->
+                <div class="mb-4">
+                    <label class="fw-semibold">
+                        Nilai Target Kerja Utama (0–100)
+                    </label>
+                    <input type="number" id="targetUtama" class="form-control mb-2" min="0" max="100">
+                    <input type="range" id="targetUtamaRange" class="form-range" min="0" max="100">
+                    <span class="slider-value" id="vTargetUtama"></span>
+                </div>
+
+                <!-- PROSES KERJA -->
+                <div>
+                    <label class="fw-semibold">
+                        Nilai Proses Kerja (0–100)
+                    </label>
+                    <input type="number" id="targetProses" class="form-control mb-2" min="0" max="100">
+                    <input type="range" id="targetProsesRange" class="form-range" min="0" max="100">
+                    <span class="slider-value" id="vTargetProses"></span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- ================= ABSENSI & WORKLOAD ================= -->
+<div class="row mb-4">
+
+<div class="col-md-6">
+<div class="card">
+<div class="card-header bg-warning">
+   
+<i class="bi bi-calendar-check"></i> Absensi (HRIS)
+</div>
+<div class="card-body">
+     <p> Berdasarkan pada Data Aplikasi HRIS Divisi HCC</p>
+<input type="number" id="absensiNum" class="form-control mb-2" min="0" max="100">
+<input type="range" id="absensiRange" class="form-range" min="0" max="100">
+<span id="vAbsensi" class="slider-value"></span>
+</div>
+</div>
+</div>
+
+<div class="col-md-6">
+<div class="card">
+<div class="card-header bg-info text-white">
+    
+<i class="bi bi-bar-chart"></i> Workload Analysis
+</div>
+<div class="card-body">
+    <p> Berdasarkan pada Data TimeCard Divisi HCC</p>
+<input type="number" id="workloadNum" class="form-control mb-2" min="0" max="100">
+<input type="range" id="workloadRange" class="form-range" min="0" max="100">
+<span id="vWorkload" class="slider-value"></span>
+</div>
+</div>
+</div>
+
+</div>
+
+<button class="btn btn-dark btn-lg w-100" onclick="saveData()">
+<i class="fas fa-save"></i> Simpan KPI
+</button>
+
+</div>
+
+<!-- ================= MODAL ================= -->
+<div class="modal fade" id="statusModal" tabindex="-1">
+<div class="modal-dialog modal-dialog-centered">
+<div class="modal-content">
+
+<div class="modal-header bg-success text-white">
+<h5 class="modal-title">Status</h5>
+<button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+</div>
+
+<div class="modal-body text-center">
+<div id="loadingBox">
+<div class="spinner-border text-primary"></div>
+<p>Menyimpan data KPI...</p>
+</div>
+
+<div id="successBox" class="d-none">
+<i class="bi bi-check-circle-fill text-success fs-1"></i>
+<p class="mt-2">Data berhasil disimpan</p>
+</div>
+</div>
+
+<div class="modal-footer d-none" id="modalFooter">
+<button class="btn btn-success w-100" data-bs-dismiss="modal">OK</button>
+</div>
+
+</div>
+</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+/* ================= CONFIG ================= */
+const API_URL = "https://script.google.com/macros/s/AKfycbwj0rKsduJpM1fKFasiJj24A_qYlAkbSRbLnjg5G1nXhxZVINIV7h7X3IEsxM960mLW/exec";
+
+
+
+/* ================= SIAP ================= */
+const solidNum        = document.getElementById("solid");
+const solidRange      = document.getElementById("solidRange");
+const vSolid          = document.getElementById("vSolid");
+
+const integrityNum    = document.getElementById("integrity");
+const integrityRange  = document.getElementById("integrityRange");
+const vIntegrity      = document.getElementById("vIntegrity");
+
+const adaptifNum      = document.getElementById("adaptif");
+const adaptifRange    = document.getElementById("adaptifRange");
+const vAdaptif        = document.getElementById("vAdaptif");
+
+const profesionalNum  = document.getElementById("profesional");
+const profesionalRange= document.getElementById("profesionalRange");
+const vProfesional    = document.getElementById("vProfesional");
+
+/* ================= KPI TARGET KERJA ================= */
+const targetUtamaNum    = document.getElementById("targetUtama");
+const targetUtamaRange  = document.getElementById("targetUtamaRange");
+const vTargetUtama      = document.getElementById("vTargetUtama");
+
+const targetProsesNum   = document.getElementById("targetProses");
+const targetProsesRange = document.getElementById("targetProsesRange");
+const vTargetProses     = document.getElementById("vTargetProses");
+
+
+
+/* ================= ABSENSI ================= */
+const absensiNum   = document.getElementById("absensiNum");
+const absensiRange = document.getElementById("absensiRange");
+const vAbsensi     = document.getElementById("vAbsensi");
+
+/* ================= WORKLOAD ================= */
+const workloadNum   = document.getElementById("workloadNum");
+const workloadRange = document.getElementById("workloadRange");
+const vWorkload     = document.getElementById("vWorkload");
+
+
+/* ================= SYNC FUNCTION ================= */
+function sync(num, range, view){
+    num.oninput = () => {
+        range.value = num.value;
+        view.innerText = num.value;
+    }
+    range.oninput = () => {
+        num.value = range.value;
+        view.innerText = range.value;
+    }
+}
+
+/* ================= INIT SYNC ================= */
+
+sync(solidNum, solidRange, vSolid);
+sync(integrityNum, integrityRange, vIntegrity);
+sync(adaptifNum, adaptifRange, vAdaptif);
+sync(profesionalNum, profesionalRange, vProfesional);
+
+sync(targetUtamaNum, targetUtamaRange, vTargetUtama);
+sync(targetProsesNum, targetProsesRange, vTargetProses);
+
+
+sync(absensiNum, absensiRange, vAbsensi);
+sync(workloadNum, workloadRange, vWorkload);
+
+/* ================= SAVE DATA ================= */
+function saveData(){
+
+    const modalEl = document.getElementById("statusModal");
+    const modal = new bootstrap.Modal(modalEl);
+
+    const loadingBox = modalEl.querySelector("#loadingBox");
+    const successBox = modalEl.querySelector("#successBox");
+    const modalFooter = modalEl.querySelector("#modalFooter");
+
+    loadingBox.classList.remove("d-none");
+    successBox.classList.add("d-none");
+    modalFooter.classList.add("d-none");
+
+    modal.show();
+
+    const payload = {
+    nama        : nama.value,
+    npp         : npp.value,
+    divisi      : divisi.value,
+    unit        : unit.value,
+    jabatan     : jabatan.value,
+
+    /* SIAP */
+    solid       : solid.value || 0,
+    integritas  : integrity.value || 0,
+    adaptif     : adaptif.value || 0,
+    profesional : profesional.value || 0,
+
+    /* KPI TARGET KERJA */
+    targetUtama : targetUtamaNum.value || 0,
+    targetProses: targetProsesNum.value || 0,
+
+    /* PERSONAL */
+    absensi     : absensiNum.value || 0,
+    workload    : workloadNum.value || 0
+};
+
+    fetch(API_URL,{
+        method:"POST",
+        body: JSON.stringify(payload)
+    })
+    .then(res => res.json())
+    .then(() => {
+        loadingBox.classList.add("d-none");
+        successBox.classList.remove("d-none");
+        modalFooter.classList.remove("d-none");
+    })
+    .catch(err => {
+        alert("❌ Gagal menyimpan data KPI");
+        modal.hide();
+        console.error(err);
+    });
+}
+</script>
+
+
+</body>
+</html>
