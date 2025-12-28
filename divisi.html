@@ -1,0 +1,100 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portal KPI DIVISI</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
+
+  <style>
+    body {
+      background: url('https://images.unsplash.com/photo-1521790361543-f645cf042ec4?auto=format&fit=crop&w=1500&q=80') no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    .overlay {
+      background: rgba(0, 0, 0, 0.55);
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .kpi-box {
+      background: linear-gradient(135deg, #ffffffee, #e8e8e8cc);
+      border-radius: 20px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+      padding: 30px;
+      text-align: center;
+      cursor: pointer;
+      transition: 0.35s;
+      backdrop-filter: blur(6px);
+    }
+
+    .kpi-box:hover {
+      transform: translateY(-10px) scale(1.03);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+      background: linear-gradient(135deg, #ffffff, #e0e0e0);
+    }
+
+    .kpi-icon {
+      font-size: 52px;
+      margin-bottom: 15px;
+      color: #0dcaf0;
+      filter: drop-shadow(0 3px 3px rgba(0,0,0,0.3));
+    }
+
+    h2.title {
+      color: white;
+      text-shadow: 0 3px 8px rgba(0,0,0,0.9);
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay"></div>
+
+  <div class="container py-5 position-relative" style="z-index: 9;">
+    <h2 class="text-center mb-5 fw-bold title">PORTAL KPI DIVISI </h2>
+
+    <div id="kpi-grid" class="row g-4 justify-content-center"></div>
+  </div>
+
+  <script>
+    const divisions = [
+      {name: 'HCC', icon: 'bi-shield-check', link: 'hcc.html'},    
+      {name: 'FRM', icon: 'bi-journal-richtext', link: 'frm.html'},
+      {name: 'INA', icon: 'bi-diagram-2', link: 'ina.html'},
+      {name: 'PLM', icon: 'bi-layers', link: 'plm.html'},   
+      {name: 'MBS', icon: 'bi-graph-up-arrow', link: 'mbs.html'},
+      {name: 'SBD', icon: 'bi-building', link: 'sbd.html'},
+      {name: 'CSI', icon: 'bi-emoji-smile', link: 'belum ada'},
+      {name: 'OPS', icon: 'bi-cpu', link: 'belum ada'},
+      {name: 'OPR', icon: 'bi-rocket-takeoff', link: 'belum ada'}   
+    ];
+
+    const grid = document.getElementById('kpi-grid');
+
+    divisions.forEach(div => {
+      const col = document.createElement('div');
+      col.className = 'col-6 col-md-4 col-lg-3';
+
+      col.innerHTML = `
+        <div class="kpi-box" onclick="window.open('${div.link}', '_blank')">
+          <i class="bi ${div.icon} kpi-icon"></i>
+          <h5 class="mt-2 fw-bold">${div.name}</h5>
+        </div>
+      `;
+
+      grid.appendChild(col);(col);
+    });
+  </script>
+</body>
+</html>
