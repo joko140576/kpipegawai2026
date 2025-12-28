@@ -35,6 +35,27 @@ body { background:#f4f6f9; }
   }
 }
 
+/* ================= FORCE 1 COLUMN ON MOBILE RESPONSIVE ================= */
+@media (max-width: 576px) {
+
+  /* Paksa semua kolom md jadi full width */
+  .row > [class*="col-md-"] {
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* Hilangkan kesan dua kolom menempel */
+  .row {
+    row-gap: 12px;
+  }
+
+  /* Deskripsi selalu di atas input */
+  .desc-box {
+    margin-bottom: 8px;
+    height: auto !important;
+  }
+
+}
 </style>
 </head>
 
