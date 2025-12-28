@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Buku Penjelasan Budaya Kerja - SOLID</title>
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            min-height: 100vh;
+        }
+
+        .header-box {
+            color: #fff;
+        }
+
+        .main-card {
+            border-radius: 22px;
+        }
+
+        .solid-card {
+            border-radius: 18px;
+            transition: 0.3s;
+            height: 100%;
+        }
+
+        .solid-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .icon-box {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .bg-solid { background: #1abc9c; }
+        .bg-internal { background: #3498db; }
+        .bg-lintas { background: #9b59b6; }
+        .bg-kolaborasi { background: #f39c12; }
+        .bg-komunikasi { background: #e67e22; }
+        .bg-peduli { background: #e74c3c; }
+        .bg-komitmen { background: #2ecc71; }
+
+        footer {
+            color: #ddd;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container my-5">
+
+    <!-- HEADER -->
+    <div class="text-center header-box mb-5">
+        <h2 class="fw-bold">
+            <i class="bi bi-book"></i> Buku Penjelasan Budaya Kerja
+        </h2>
+        <span class="badge bg-success fs-6 px-4 py-2 mt-2">Tema SOLID</span>
+    </div>
+
+    <!-- CARD UTAMA -->
+    <div class="card main-card shadow-lg">
+        <div class="card-body p-4">
+
+            <!-- PENGERTIAN -->
+            <div class="row mb-4">
+                <div class="col-md-12">
+                    <div class="solid-card p-4 bg-light">
+                        <div class="icon-box bg-solid">
+                            <i class="bi bi-shield-check"></i>
+                        </div>
+                        <h5 class="fw-bold">Pengertian SOLID</h5>
+                        <p class="mb-0">
+                            <strong>SOLID</strong> adalah budaya kerja yang menekankan kekompakan,
+                            kerja sama, saling mendukung, dan komitmen bersama
+                            untuk mencapai tujuan organisasi secara optimal.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- GRID KRITERIA -->
+            <div class="row g-4">
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="solid-card p-4 bg-white">
+                        <div class="icon-box bg-internal">
+                            <i class="bi bi-people-fill"></i>
+                        </div>
+                        <h6 class="fw-bold">Kerja Sama Internal</h6>
+                        <p>
+                            Kemampuan bekerja sama dengan rekan satu divisi,
+                            saling membantu, dan menjaga kekompakan tim.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="solid-card p-4 bg-white">
+                        <div class="icon-box bg-lintas">
+                            <i class="bi bi-diagram-3-fill"></i>
+                        </div>
+                        <h6 class="fw-bold">Kerja Sama Lintas Divisi</h6>
+                        <p>
+                            Mampu berkoordinasi dengan unit lain,
+                            menjaga hubungan kerja yang harmonis,
+                            dan mendukung proses organisasi.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="solid-card p-4 bg-white">
+                        <div class="icon-box bg-kolaborasi">
+                            <i class="bi bi-lightbulb-fill"></i>
+                        </div>
+                        <h6 class="fw-bold">Kolaborasi</h6>
+                        <p>
+                            Aktif berbagi ide, informasi,
+                            serta terbuka terhadap masukan
+                            demi hasil kerja yang optimal.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="solid-card p-4 bg-white">
+                        <div class="icon-box bg-komunikasi">
+                            <i class="bi bi-chat-dots-fill"></i>
+                        </div>
+                        <h6 class="fw-bold">Komunikasi Efektif</h6>
+                        <p>
+                            Menyampaikan informasi dengan jelas,
+                            sopan, profesional,
+                            serta mampu mendengarkan dengan baik.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="solid-card p-4 bg-white">
+                        <div class="icon-box bg-peduli">
+                            <i class="bi bi-heart-fill"></i>
+                        </div>
+                        <h6 class="fw-bold">Kepedulian terhadap Tim</h6>
+                        <p>
+                            Memiliki empati, kepedulian,
+                            dan kesediaan membantu rekan kerja
+                            demi lingkungan kerja yang positif.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="solid-card p-4 bg-white">
+                        <div class="icon-box bg-komitmen">
+                            <i class="bi bi-flag-fill"></i>
+                        </div>
+                        <h6 class="fw-bold">Komitmen Tujuan Bersama</h6>
+                        <p>
+                            Mendukung visi, misi, dan target organisasi
+                            dengan mengutamakan kepentingan bersama.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="text-center mt-4 small">
+        © 2025 | Buku Budaya Kerja Pegawai
+    </footer>
+
+</div>
+
+</body>
+</html>
