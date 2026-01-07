@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Penilaian KPI Pegawai Divisi HCC</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+body { background:#f4f6f9; }
+input[type=number] { width:90px; }
+.card-header { font-weight:600; }
+</style>
+</head>
+
+<body>
+
+<div class="container my-5">
+
+<h3 class="text-center mb-4">📊 Penilaian KPI Pegawai Divisi HCC</h3>
+
+<!-- PILIH KPI -->
+<div class="mb-4">
+  <label class="form-label fw-bold">Pilih Jenis KPI Pegawai</label>
+  <select id="kpiSelect" class="form-select">
+    <option value="">-- Pilih --</option>
+    <option value="dept1">KPI SM Remenurasi & Personality</option>
+    <option value="dept2">KPI SM Recruitment & Development</option>
+    <option value="unit1">KPI Manager Development</option>
+    <option value="unit2">KPI Manager Recruitment</option>
+    <option value="unit3">KPI Manager Personalia</option>
+    <option value="unit4">KPI Manager Remenurasi</option>
+    <option value="staf1">KPI Staf Development</option>
+    <option value="staf2">KPI Staf Recruitment</option>
+    <option value="staf3">KPI Staf personalia</option>
+    <option value="staf4">KPI Staf Remunerasi</option>
+    
+  </select>
+  </select>
+  </select>
+</div>
+
+<!-- KPI HASIL -->
+<div class="card mb-4">
+  <div class="card-header bg-success text-white">
+    KPI HASIL
+  </div>
+  <div class="card-body p-0">
+    <table class="table table-bordered mb-0">
+      <thead class="table-light">
+        <tr>
+          <th>No</th>
+          <th>KPI</th>
+          <th>Target</th>
+          <th>Bobot (%)</th>
+          <th>Nilai</th>
+          <th>Hasil (%)</th>
+        </tr>
+      </thead>
+      <tbody id="hasilBody"></tbody>
+      <tfoot class="table-secondary">
+        <tr>
+          <td colspan="5" class="text-end fw-bold">TOTAL KPI HASIL</td>
+          <td id="totalHasil">0%</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>
+
+<!-- KPI PROSES -->
+<div class="card mb-4">
+  <div class="card-header bg-primary text-white">
+    KPI PROSES
+  </div>
+  <div class="card-body p-0">
+    <table class="table table-bordered mb-0">
+      <thead class="table-light">
+        <tr>
+          <th>No</th>
+          <th>KPI</th>
+          <th>Target</th>
+          <th>Bobot (%)</th>
+          <th>Nilai</th>
+          <th>Hasil (%)</th>
+        </tr>
+      </thead>
+      <tbody id="prosesBody"></tbody>
+      <tfoot class="table-secondary">
+        <tr>
+          <td colspan="5" class="text-end fw-bold">TOTAL KPI PROSES</td>
+          <td id="totalProses">0%</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>
+
+
+
+</div>
+
+<script>
+/* ================= DATA KPI SESUAI EXCEL ================= */
+const dataKPI = {
+
+dept1: {
+  hasil: [
+    {
+      kpi: "Ketepatan & akurasi payroll perusahaan",
+      target: "100%, error ≤ 0,1%",
+      bobot: 25
+    },
+    {
+      kpi: "Kepatuhan regulasi ketenagakerjaan & pajak",
+      target: "0 pelanggaran",
+      bobot: 25
+    },
+    {
+      kpi: "Validitas data pegawai (HRIS)",
+      target: "≥ 99%",
+      bobot: 25
+    },
+    {
+      kpi: "Kinerja unit remunerasi & personalia",
+      target: "≥ 95% KPI tercapai",
+      bobot: 25
+    }
+    
+  ],
+
+  proses: [
+    {
+      kpi: "Perencanaan & pengendalian program HR",
+      target: "Program sesuai RKAP",
+      bobot: 25
+    },
+    {
+      kpi: "Monitoring & evaluasi kinerja unit",
+      target: "Review rutin & laporan",
+      bobot: 25
+    },
+    {
+      kpi: "Penerapan SOP & tata kelola HR",
+      target: "SOP dijalankan konsisten",
+      bobot: 25
+    },
+    {
+      kpi: "Koordinasi lintas unit & manajemen",
+      target: "SLA & komunikasi efektif",
+      bobot: 25
+    }
+    
+  ]
+},
+
+
+  dept2: {
+  hasil: [  
+    {
+      kpi: "Pemenuhan kebutuhan tenaga kerja",
+      target: "≥ 95% terpenuhi tepat waktu",
+      bobot: 30
+    },
+    {
+      kpi: "Kualitas hasil rekrutmen & pengembangan",
+      target: "≥ 90% lulus masa evaluasi",
+      bobot: 25
+    },
+    {
+      kpi: "Pencapaian program training & development",
+      target: "≥ 95% rencana terlaksana",
+      bobot: 25
+    },
+    {
+      kpi: "Kepuasan user/unit kerja",
+      target: "≥ 85%",
+      bobot: 20
+    }
+  ],
+
+  proses: [
+     {
+      kpi: "Perencanaan kebutuhan SDM & training",
+      target: "Sesuai manpower plan",
+      bobot: 25
+    },
+    {
+      kpi: "Monitoring & evaluasi unit",
+      target: "Review & laporan berkala",
+      bobot: 25
+    },
+    {
+      kpi: "Kepatuhan SOP rekrutmen & training",
+      target: "Audit tanpa temuan",
+      bobot: 25
+    },
+    {
+      kpi: "Koordinasi lintas unit & manajemen",
+      target: "SLA terpenuhi",
+      bobot: 25
+    }
+  ]
+},
+
+unit1: {
+  hasil: [
+    {
+      kpi: "Realisasi program training & development",
+      target: "≥ 95%",
+      bobot: 35
+    },
+    {
+      kpi: "Peningkatan kompetensi peserta",
+      target: "≥ 85% lulus evaluasi",
+      bobot: 30
+    },
+    {
+      kpi: "Kepuasan peserta & user training",
+      target: "≥ 85%",
+      bobot: 20
+    },
+    {
+      kpi: "Efektivitas biaya training",
+      target: "Sesuai anggaran",
+      bobot: 15
+    }
+     
+  ],
+
+  proses: [
+    
+       {
+      kpi: "Penyusunan TNA & kurikulum training",
+      target: "Tepat & terdokumentasi",
+      bobot: 30
+    },
+    {
+      kpi: "Pelaksanaan & monitoring training",
+      target: "Sesuai jadwal",
+      bobot: 30
+    },
+    {
+      kpi: "Evaluasi training (pre–post test, feedback)",
+      target: "Lengkap & tepat waktu",
+      bobot: 25
+    },
+    {
+      kpi: "Administrasi & dokumentasi training",
+      target: "Lengkap & rapi",
+      bobot: 15
+    }
+  ]
+},
+
+ 
+  unit2: {
+  hasil: [    
+    {
+      kpi: "Time to Hire",
+      target: "Sesuai SLA",
+      bobot: 30
+    },
+    {
+      kpi: "Pemenuhan formasi & kebutuhan tenaga kerja",
+      target: "≥ 95%",
+      bobot: 30
+    },
+    {
+      kpi: "Kualitas kandidat (lulus probation)",
+      target: "≥ 90%",
+      bobot: 25
+    },
+    {
+      kpi: "Kepuasan user rekrutmen",
+      target: "≥ 85%",
+      bobot: 15
+    }
+  ],
+
+  proses: [
+      {
+      kpi: "Proses seleksi & administrasi rekrutmen",
+      target: "Sesuai SOP",
+      bobot: 30
+    },
+    {
+      kpi: "Pengelolaan database kandidat",
+      target: "Update & akurat",
+      bobot: 25
+    },
+    {
+      kpi: "Koordinasi dengan user & manajemen",
+      target: "SLA terpenuhi",
+      bobot: 25
+    },
+    {
+      kpi: "Kepatuhan regulasi ketenagakerjaan",
+      target: "Tanpa pelanggaran",
+      bobot: 20
+    }
+    
+  ]
+},
+
+
+unit3: {
+  hasil: [
+    {
+      kpi: "Keakuratan & kelengkapan data pegawai (HRIS)",
+      target: "≥ 99%",
+      bobot: 35
+    },
+    {
+      kpi: "Pengelolaan PKWT & kontrak kerja",
+      target: "100% tepat waktu & patuh",
+      bobot: 35
+    },
+    {
+      kpi: "SLA layanan administrasi kepegawaian",
+      target: "≥ 98%",
+      bobot: 30
+    }
+
+  ],
+
+  proses: [
+      {
+      kpi: "Proses administrasi & arsip kepegawaian",
+      target: "Lengkap & tertib",
+      bobot: 30
+    },
+    {
+      kpi: "Update status pegawai sesuai SOP",
+      target: "Tepat waktu",
+      bobot: 30
+    },
+    {
+      kpi: "Pemeliharaan & pemanfaatan HRIS",
+      target: "Data up to date",
+      bobot: 25
+    },
+    {
+      kpi: "Pelayanan & respon kepegawaian",
+     target: "SLA & dokumentasi",
+      bobot: 15
+    }
+      
+  ]
+},
+
+
+unit4: {
+  hasil: [
+     {
+      kpi: "Payroll tepat waktu",
+      target: "100%",
+      bobot: 30
+    },
+    {
+      kpi: "Akurasi gaji & tunjangan",
+      target: "Error ≤ 0,1%",
+      bobot: 30
+    },
+    {
+      kpi: "Kepatuhan pajak (PPh 21 & bukti potong)",
+      target: "100% tepat waktu",
+      bobot: 25
+    },
+    {
+      kpi: "Koreksi payroll",
+      target: "≤ 1%",
+      bobot: 15
+    }
+    
+  ],
+
+  proses: [
+    {
+      kpi: "Verifikasi & approval payroll",
+      target: "Checklist lengkap",
+      bobot: 30
+    },
+    {
+      kpi: "Pengelolaan data & dokumen payroll",
+      target: "Tertib & terdokumentasi",
+      bobot: 25
+    },
+    {
+      kpi: "Kepatuhan SOP payroll & pajak",
+      target: "Audit tanpa temuan",
+      bobot: 25
+    },
+    {
+      kpi: "Koordinasi HR–Finance–IT",
+      target: "SLA terpenuhi",
+      bobot: 20
+    }
+    
+  ]
+},
+
+staf1: {
+  hasil: [
+    {
+      kpi: "Pelaksanaan program training",
+      target: "≥ 95%",
+      bobot: 40
+    },
+    {
+      kpi: "Kelulusan & peningkatan kompetensi peserta",
+      target: "≥ 85%",
+      bobot: 30
+    },
+    {
+      kpi: "Kepuasan peserta training",
+      target: "≥ 85%",
+      bobot: 20
+    },
+    {
+      kpi: "Ketepatan administrasi & laporan training",
+      target: "100%",
+      bobot: 10
+    }
+    
+  ],
+
+  proses: [
+    {
+      kpi: "Persiapan materi & logistik training",
+      target: "Tepat & lengkap",
+      bobot: 30
+    },
+    {
+      kpi: "Pelaksanaan & monitoring training",
+      target: "Sesuai jadwal",
+      bobot: 30
+    },
+    {
+      kpi: "Evaluasi training (pre–post test, feedback)",
+      target: "Lengkap",
+      bobot: 25
+    },
+    {
+      kpi: "Dokumentasi & pelaporan training",
+      target: "Rapi & tepat waktu",
+      bobot: 15
+    }
+      
+  ]
+},
+
+
+staf2: {
+  hasil: [
+      {
+      kpi: "Pemenuhan kebutuhan tenaga kerja",
+      target: "≥ 95%",
+      bobot: 35
+    },
+    {
+      kpi: "Time to Hire",
+      target: "Sesuai SLA",
+      bobot: 30
+    },
+    {
+      kpi: "Kualitas kandidat (lulus probation)",
+      target: "≥ 90%",
+      bobot: 25
+    },
+    {
+      kpi: "Kepuasan user rekrutmen",
+      target: "≥ 85%",
+      bobot: 10
+    }
+  ],
+
+  proses: [
+    {
+      kpi: "Proses seleksi kandidat",
+      target: "Sesuai SOP",
+      bobot: 30
+    },
+    {
+      kpi: "Administrasi & database kandidat",
+      target: "Lengkap & update",
+      bobot: 30
+    },
+    {
+      kpi: "Koordinasi jadwal seleksi dengan user",
+      target: "SLA terpenuhi",
+      bobot: 25
+    },
+    {
+      kpi: "Kepatuhan regulasi ketenagakerjaan",
+      target: "Tanpa pelanggaran",
+      bobot: 15
+    }
+  ]
+},
+
+
+
+staf3: {
+  hasil: [
+     {
+      kpi: "Kelengkapan & keakuratan data pegawai",
+      target: "≥ 99%",
+      bobot: 40
+    },
+    {
+      kpi: "Ketepatan pembuatan PKWT & surat kerja",
+      target: "100% tepat waktu",
+      bobot: 30
+    },
+    {
+      kpi: "Update status pegawai",
+      target: "≥ 98% tepat waktu",
+      bobot: 20
+    },
+    {
+      kpi: "Penyelesaian administrasi kepegawaian",
+      target: "SLA ≥ 98%",
+      bobot: 10
+    }
+      
+  ],
+
+  proses: [
+    {
+      kpi: "Pengarsipan & dokumentasi kepegawaian",
+      target: "Lengkap & tertib",
+      bobot: 30
+    },
+    {
+      kpi: "Input & update data HRIS",
+      target: "Sesuai SOP",
+      bobot: 30
+    },
+    {
+      kpi: "Kepatuhan regulasi & SOP kepegawaian",
+      target: "Tanpa kesalahan",
+      bobot: 25
+    },
+    {
+      kpi: "Pelayanan administrasi pegawai",
+      target: "SLA terpenuhi",
+      bobot: 15
+    }
+  ]
+},
+
+
+
+  staf4: {
+  hasil: [
+      {
+      kpi: "Ketepatan perhitungan gaji & tunjangan",
+      target: "Error ≤ 0,1%",
+      bobot: 35
+    },
+    {
+      kpi: "Ketepatan waktu proses payroll",
+      target: "100% sesuai jadwal",
+      bobot: 30
+    },
+    {
+      kpi: "Akurasi perhitungan pajak (PPh 21)",
+      target: "100% akurat",
+      bobot: 20
+    },
+    {
+      kpi: "Penyelesaian koreksi payroll",
+      target: "≤ 1% kasus",
+      bobot: 15
+    }
+    
+    ],
+
+    proses: [
+       {
+      kpi: "Input & validasi data payroll",
+      target: "Sesuai SOP",
+      bobot: 30
+    },
+    {
+      kpi: "Kelengkapan dokumen payroll & pajak",
+      target: "Lengkap & rapi",
+      bobot: 25
+    },
+    {
+      kpi: "Kepatuhan SOP payroll & pajak",
+      target: "Tanpa temuan",
+      bobot: 25
+    },
+    {
+      kpi: "Koordinasi dengan personalia & finance",
+      target: "SLA terpenuhi",
+      bobot: 20
+    }
+    ]
+  }
+};
+
+/* ================= PILIH KPI ================= */
+document.getElementById("kpiSelect").addEventListener("change", function(){
+  const val = this.value;
+  renderTable(val);
+});
+
+/* ================= RENDER TABEL ================= */
+function renderTable(type){
+  document.getElementById("hasilBody").innerHTML = "";
+  document.getElementById("prosesBody").innerHTML = "";
+  document.getElementById("totalHasil").innerText = "0%";
+  document.getElementById("totalProses").innerText = "0%";
+  
+
+  if(!dataKPI[type]) return;
+
+  renderRows(dataKPI[type].hasil, "hasilBody");
+  renderRows(dataKPI[type].proses, "prosesBody");
+}
+
+/* ================= BARIS ================= */
+function renderRows(data, target){
+  data.forEach((item, i) => {
+    document.getElementById(target).innerHTML += `
+      <tr>
+        <td>${i+1}</td>
+        <td>${item.kpi}</td>
+        <td>${item.target}</td>
+        <td>${item.bobot}</td>
+        <td>
+          <input type="number" min="0" max="100"
+            class="form-control nilai"
+            data-bobot="${item.bobot}">
+        </td>
+        <td class="hasil">0</td>
+      </tr>`;
+  });
+}
+
+/* ================= HITUNG ================= */
+document.addEventListener("input", function(e){
+  if(!e.target.classList.contains("nilai")) return;
+
+  let totalHasil = 0;
+  let totalProses = 0;
+
+  document.querySelectorAll("#hasilBody tr").forEach(row=>{
+    const nilai = row.querySelector(".nilai").value || 0;
+    const bobot = row.querySelector(".nilai").dataset.bobot;
+    const hasil = (nilai * bobot / 100).toFixed(2);
+    row.querySelector(".hasil").innerText = hasil;
+    totalHasil += parseFloat(hasil);
+  });
+
+  document.querySelectorAll("#prosesBody tr").forEach(row=>{
+    const nilai = row.querySelector(".nilai").value || 0;
+    const bobot = row.querySelector(".nilai").dataset.bobot;
+    const hasil = (nilai * bobot / 100).toFixed(2);
+    row.querySelector(".hasil").innerText = hasil;
+    totalProses += parseFloat(hasil);
+  });
+
+  document.getElementById("totalHasil").innerText = totalHasil.toFixed(2)+"%";
+  document.getElementById("totalProses").innerText = totalProses.toFixed(2)+"%";
+  
+});
+</script>
+
+</body>
+</html>
