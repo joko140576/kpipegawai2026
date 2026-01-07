@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Penilaian KPI Pegawai</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+body { background:#f4f6f9; }
+input[type=number] { width:90px; }
+.card-header { font-weight:600; }
+</style>
+</head>
+
+<body>
+
+<div class="container my-5">
+
+<h3 class="text-center mb-4">📊 Penilaian KPI Pegawai</h3>
+
+<!-- PILIH KPI -->
+<div class="mb-4">
+  <label class="form-label fw-bold">Pilih Jenis KPI Pegawai</label>
+  <select id="kpiSelect" class="form-select">
+    <option value="">-- Pilih --</option>
+    <option value="kasir">KPI Kasir</option>
+    <option value="manager">KPI Manager / Asmen</option>
+    <option value="custody">KPI Custody</option>
+    <option value="flm">KPI FLM</option>
+    <option value="admin">KPI Admin</option>
+  </select>
+</div>
+
+<!-- KPI HASIL -->
+<div class="card mb-4">
+  <div class="card-header bg-success text-white">
+    KPI HASIL
+  </div>
+  <div class="card-body p-0">
+    <table class="table table-bordered mb-0">
+      <thead class="table-light">
+        <tr>
+          <th>No</th>
+          <th>KPI</th>
+          <th>Target</th>
+          <th>Bobot (%)</th>
+          <th>Nilai</th>
+          <th>Hasil (%)</th>
+        </tr>
+      </thead>
+      <tbody id="hasilBody"></tbody>
+      <tfoot class="table-secondary">
+        <tr>
+          <td colspan="5" class="text-end fw-bold">TOTAL KPI HASIL</td>
+          <td id="totalHasil">0%</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>
+
+<!-- KPI PROSES -->
+<div class="card mb-4">
+  <div class="card-header bg-primary text-white">
+    KPI PROSES
+  </div>
+  <div class="card-body p-0">
+    <table class="table table-bordered mb-0">
+      <thead class="table-light">
+        <tr>
+          <th>No</th>
+          <th>KPI</th>
+          <th>Target</th>
+          <th>Bobot (%)</th>
+          <th>Nilai</th>
+          <th>Hasil (%)</th>
+        </tr>
+      </thead>
+      <tbody id="prosesBody"></tbody>
+      <tfoot class="table-secondary">
+        <tr>
+          <td colspan="5" class="text-end fw-bold">TOTAL KPI PROSES</td>
+          <td id="totalProses">0%</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>
+
+
+
+</div>
+
+<script>
+/* ================= DATA KPI SESUAI EXCEL ================= */
+const dataKPI = {
+
+manager: {
+  hasil: [
+    {
+      kpi: "Pencapaian SLA operasional ATM",
+      target: "≥ 99%",
+      bobot: 25
+    },
+    {
+      kpi: "Selisih kas (loss & shortage)",
+      target: "0 selisih",
+      bobot: 25
+    },
+    {
+      kpi: "Tingkat availability ATM",
+      target: "≥ 99%",
+      bobot: 15
+    },
+    {
+      kpi: "Cash out / gagal isi ATM",
+      target: "0 kasus",
+      bobot: 10
+    },
+    {
+      kpi: "Fraud & pelanggaran SOP",
+      target: "0 kasus",
+      bobot: 10
+    },
+    {
+      kpi: "Penyelesaian tiket problem",
+      target: "≥ 98%",
+      bobot: 10
+    },
+    {
+      kpi: "Kepuasan bank / klien",
+      target: "≤ target",
+      bobot: 5
+    }
+  ],
+
+  proses: [
+    {
+      kpi: "Pengendalian proses kas (end to end)",
+      target: "SOP & dual control",
+      bobot: 20
+    },
+    {
+      kpi: "Pengelolaan tim operasional",
+      target: "Produktivitas & coverage",
+      bobot: 15
+    },
+    {
+      kpi: "Pengawasan kepatuhan SOP & compliance",
+      target: "Audit internal",
+      bobot: 15
+    },
+    {
+      kpi: "Perencanaan & kontrol jadwal operasional",
+      target: "SLA tercapai",
+      bobot: 15
+    },
+    {
+      kpi: "Monitoring dashboard ATM & problem",
+      target: "Respons cepat",
+      bobot: 15
+    },
+    {
+      kpi: "Koordinasi lintas fungsi & stakeholder",
+      target: "Efektif",
+      bobot: 10
+    },
+    {
+      kpi: "Pelaporan operasional & eskalasi risiko",
+      target: "Tepat waktu",
+      bobot: 10
+    }
+  ]
+},
+
+
+   kasir: {
+  hasil: [
+    {
+      kpi: "Akurasi perhitungan uang",
+      target: "Selisih 0",
+      bobot: 35
+    },
+    {
+      kpi: "Penyelesaian proses kas sesuai SLA",
+      target: "≥ 98%",
+      bobot: 25
+    },
+    {
+      kpi: "Rekonsiliasi kas & buku besar",
+      target: "Match 100%",
+      bobot: 20
+    },
+    {
+      kpi: "Ketepatan pengelompokan uang",
+      target: "100% benar",
+      bobot: 10
+    },
+    {
+      kpi: "Keamanan & kehilangan kas",
+      target: "0 kasus",
+      bobot: 10
+    }
+  ],
+
+  proses: [
+    {
+      kpi: "Pengambilan & serah terima kas",
+      target: "Berita acara lengkap",
+      bobot: 15
+    },
+    {
+      kpi: "Proses perhitungan kas",
+      target: "SOP dipatuhi",
+      bobot: 20
+    },
+    {
+      kpi: "Penyortiran & penyiapan kaset",
+      target: "Sesuai standar",
+      bobot: 20
+    },
+    {
+      kpi: "Barcode & sealing kaset",
+      target: "Valid & tercatat",
+      bobot: 15
+    },
+    {
+      kpi: "Administrasi & pencatatan",
+      target: "Lengkap & rapi",
+      bobot: 15
+    },
+    {
+      kpi: "Rekonsiliasi & penyelesaian selisih",
+      target: "Ditangani sesuai SOP",
+      bobot: 15
+    }
+  ]
+},
+
+custody: {
+  hasil: [
+    {
+      kpi: "Keberhasilan restoking ATM/CRM",
+      target: "100% berhasil",
+      bobot: 30
+    },
+    {
+      kpi: "Ketepatan waktu replenishment",
+      target: "≥ 98% sesuai SLA",
+      bobot: 25
+    },
+    {
+      kpi: "Akurasi kas & kaset ATM",
+      target: "0 selisih",
+      bobot: 20
+    },
+    {
+      kpi: "Keamanan kas & kunci",
+      target: "0 kasus",
+      bobot: 15
+    },
+    {
+      kpi: "Kelengkapan dokumen & EJ",
+      target: "100% lengkap",
+      bobot: 10
+    }
+  ],
+
+  proses: [
+    {
+      kpi: "Serah terima kaset & kunci",
+      target: "BA lengkap & sah",
+      bobot: 20
+    },
+    {
+      kpi: "Kepatuhan prosedur dual control",
+      target: "SOP dipatuhi",
+      bobot: 15
+    },
+    {
+      kpi: "Pelaksanaan perjalanan dinas",
+      target: "Sesuai rute & waktu",
+      bobot: 15
+    },
+    {
+      kpi: "Proses restoking mesin",
+      target: "Sesuai SOP",
+      bobot: 25
+    },
+    {
+      kpi: "Serah terima pasca restok",
+      target: "Lengkap & tercatat",
+      bobot: 15
+    },
+    {
+      kpi: "Administrasi & dokumentasi",
+      target: "Lengkap & rapi",
+      bobot: 10
+    }
+  ]
+},
+
+ 
+  flm: {
+  hasil: [
+    {
+      kpi: "Respon time ke lokasi problem",
+      target: "Sesuai SLA",
+      bobot: 30
+    },
+    {
+      kpi: "Resolution time problem solving",
+      target: "Sesuai SLA",
+      bobot: 30
+    },
+    {
+      kpi: "Tingkat keberhasilan perbaikan",
+      target: "≥ 98%",
+      bobot: 20
+    },
+    {
+      kpi: "Minimasi repeat problem",
+      target: "≤ 2%",
+      bobot: 10
+    },
+    {
+      kpi: "Kualitas laporan & dokumentasi",
+      target: "100%",
+      bobot: 10
+    }
+  ],
+
+  proses: [
+    {
+      kpi: "Proses respon & mobilisasi",
+      target: "Sesuai SOP",
+      bobot: 20
+    },
+    {
+      kpi: "Proses troubleshooting",
+      target: "Metode standar",
+      bobot: 25
+    },
+    {
+      kpi: "Test mesin pasca perbaikan",
+      target: "Berhasil & terdokumentasi",
+      bobot: 20
+    },
+    {
+      kpi: "Pemeriksaan infrastruktur",
+      target: "Lengkap",
+      bobot: 15
+    },
+    {
+      kpi: "Pelaporan gangguan & perbaikan",
+      target: "Tepat waktu & lengkap",
+      bobot: 10
+    },
+    {
+      kpi: "Koordinasi dengan kantor & pihak terkait",
+      target: "SLA komunikasi",
+      bobot: 10
+    }
+  ]
+},
+
+
+  admin: {
+    hasil: [
+      {
+      kpi: "Akurasi rekonsiliasi kaset & petty cash",
+      target: "Selisih 0",
+      bobot: 30
+    },
+    {
+      kpi: "Ketepatan jadwal pengisian ATM",
+      target: "≥ 98% sesuai jadwal",
+      bobot: 25
+    },
+    {
+      kpi: "Monitoring saldo ATM & potensi cash out",
+      target: "Tidak terjadi cash out",
+      bobot: 20
+    },
+    {
+      kpi: "Pengelolaan tiket problem ATM",
+      target: "≥ 98% tertangani",
+      bobot: 15
+    },
+    {
+      kpi: "Ketertiban administrasi pegawai & operasional",
+      target: "100% lengkap",
+      bobot: 10
+    }
+    ],
+
+    proses: [
+       {
+      kpi: "Proses rekonsiliasi kas & petty cash",
+      target: "SOP dipatuhi",
+      bobot: 25
+    },
+    {
+      kpi: "Monitoring dashboard ATM & tiket",
+      target: "Real time & update",
+      bobot: 25
+    },
+    {
+      kpi: "Penjadwalan pengisian ATM",
+      target: "Sesuai SLA & prioritas",
+      bobot: 20
+    },
+    {
+      kpi: "Administrasi & dokumentasi",
+      target: "Rapi & terdokumentasi",
+      bobot: 20
+    },
+    {
+      kpi: "Koordinasi dengan custody, FLM & kantor",
+      target: "SLA komunikasi",
+      bobot: 10
+    }
+    ]
+  }
+};
+
+/* ================= PILIH KPI ================= */
+document.getElementById("kpiSelect").addEventListener("change", function(){
+  const val = this.value;
+  renderTable(val);
+});
+
+/* ================= RENDER TABEL ================= */
+function renderTable(type){
+  document.getElementById("hasilBody").innerHTML = "";
+  document.getElementById("prosesBody").innerHTML = "";
+  document.getElementById("totalHasil").innerText = "0%";
+  document.getElementById("totalProses").innerText = "0%";
+  
+
+  if(!dataKPI[type]) return;
+
+  renderRows(dataKPI[type].hasil, "hasilBody");
+  renderRows(dataKPI[type].proses, "prosesBody");
+}
+
+/* ================= BARIS ================= */
+function renderRows(data, target){
+  data.forEach((item, i) => {
+    document.getElementById(target).innerHTML += `
+      <tr>
+        <td>${i+1}</td>
+        <td>${item.kpi}</td>
+        <td>${item.target}</td>
+        <td>${item.bobot}</td>
+        <td>
+          <input type="number" min="0" max="100"
+            class="form-control nilai"
+            data-bobot="${item.bobot}">
+        </td>
+        <td class="hasil">0</td>
+      </tr>`;
+  });
+}
+
+/* ================= HITUNG ================= */
+document.addEventListener("input", function(e){
+  if(!e.target.classList.contains("nilai")) return;
+
+  let totalHasil = 0;
+  let totalProses = 0;
+
+  document.querySelectorAll("#hasilBody tr").forEach(row=>{
+    const nilai = row.querySelector(".nilai").value || 0;
+    const bobot = row.querySelector(".nilai").dataset.bobot;
+    const hasil = (nilai * bobot / 100).toFixed(2);
+    row.querySelector(".hasil").innerText = hasil;
+    totalHasil += parseFloat(hasil);
+  });
+
+  document.querySelectorAll("#prosesBody tr").forEach(row=>{
+    const nilai = row.querySelector(".nilai").value || 0;
+    const bobot = row.querySelector(".nilai").dataset.bobot;
+    const hasil = (nilai * bobot / 100).toFixed(2);
+    row.querySelector(".hasil").innerText = hasil;
+    totalProses += parseFloat(hasil);
+  });
+
+  document.getElementById("totalHasil").innerText = totalHasil.toFixed(2)+"%";
+  document.getElementById("totalProses").innerText = totalProses.toFixed(2)+"%";
+  
+});
+</script>
+
+</body>
+</html>
