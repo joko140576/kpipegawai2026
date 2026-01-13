@@ -654,7 +654,17 @@ body {
 <i class="bi bi-bar-chart"></i> Workload Analysis Bobot 15%
 </div>
 <div class="card-body">
-    <p> Berdasarkan pada Data TimeCard Divisi HCC</p>
+    <p> penilaian bisa berdasarkan data dari</p>  
+    <ul>
+      <li>Timecard untuk HeadQuarters</li>
+      <li>McEasy untuk Driver</li>
+      <li>Savina untuk team FLM</li>
+      <li>etc..</li>
+    </ul>
+    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#kpiModal">
+    Buka Form Penilaian
+    </button>
+
 <input type="number" id="workloadNum" class="form-control mb-2" min="0" max="100">
 <input type="range" id="workloadRange" class="form-range" min="0" max="100">
 <span id="vWorkload" class="slider-value"></span>
@@ -1274,6 +1284,96 @@ body {
 </div>
 
 
+<!-- ================= MODAL WORKLOAD APP================= -->
+<!-- Modal -->
+<div class="modal fade" id="kpiModal" tabindex="-1" aria-labelledby="kpiModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="kpiModalLabel">Workload Berdasarkan Aplikasi</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+
+        <!-- 1. PRODUKTIVITAS -->
+        <div class="card mb-3">
+          <div class="card-body">
+            <h5 class="card-title">1. Produktivitas / Volume Kerja</h5>
+            <div class="kriteria-box"><i class="bi bi-clock" style="font-size: 1rem; color:#0d6efd;"></i>
+Timecard/Headquarter → jam kerja efektif (misal 8 jam benar-benar produktif)</div>
+            <div class="kriteria-box"><i class="bi bi-car-front" style="font-size: 1rem; color:#198754;"></i>
+Driver/McEasy → jumlah trip / pengiriman selesai sesuai target</div>
+            <div class="kriteria-box"><i class="bi bi-wrench" style="font-size: 1rem; color:#fd7e14;"></i>
+Teknisi-FLM/Savina → jumlah tiket / pekerjaan lapangan diselesaikan sesuai jadwal</div>
+
+            <input type="range" class="form-range mt-3" min="0" max="100" step="1" id="nilai1" value="75" oninput="hitungTotal()">
+            Nilai: <span class="slider-value" id="val1">75</span>
+          </div>
+        </div>
+
+        <!-- 2. KUALITAS -->
+        <div class="card mb-3">
+          <div class="card-body">
+            <h5 class="card-title">2. Kualitas & Akurasi</h5>
+            <div class="kriteria-box"><i class="bi bi-clock" style="font-size: 1rem; color:#0d6efd;"></i> Timecard/Headquarter → data yang dicatat benar, tidak ada manipulasi</div>
+            <div class="kriteria-box"><i class="bi bi-car-front" style="font-size: 1rem; color:#198754;"></i> Driver/McEasy → pengiriman tepat alamat, catatan perjalanan benar</div>
+            <div class="kriteria-box"><i class="bi bi-wrench" style="font-size: 1rem; color:#fd7e14;"></i> Teknisi-FLM/Savina → laporan pekerjaan akurat, tidak ada kesalahan servis</div>
+
+            <input type="range" class="form-range mt-3" min="0" max="100" step="1" id="nilai2" value="75" oninput="hitungTotal()">
+            Nilai: <span class="slider-value" id="val2">75</span>
+          </div>
+        </div>
+
+        <!-- 3. KECEPATAN -->
+        <div class="card mb-3">
+          <div class="card-body">
+            <h5 class="card-title">3. Kecepatan & Efisiensi</h5>
+            <div class="kriteria-box"><i class="bi bi-clock" style="font-size: 1rem; color:#0d6efd;"></i> Timecard/Headquarter → cepat dan tepat mengisi data harian</div>
+            <div class="kriteria-box"><i class="bi bi-car-front" style="font-size: 1rem; color:#198754;"></i> Driver/McEasy → waktu perjalanan sesuai estimasi, tidak ada delay yang tidak perlu</div>
+            <div class="kriteria-box"><i class="bi bi-wrench" style="font-size: 1rem; color:#fd7e14;"></i> Teknisi-FLM/Savina → waktu respon lapangan vs SLA, penyelesaian cepat</div>
+
+            <input type="range" class="form-range mt-3" min="0" max="100" step="1" id="nilai3" value="75" oninput="hitungTotal()">
+            Nilai: <span class="slider-value" id="val3">75</span>
+          </div>
+        </div>
+
+        <!-- 4. KEPATUHAN -->
+        <div class="card mb-3">
+          <div class="card-body">
+            <h5 class="card-title">4. Kepatuhan Prosedur & SOP</h5>
+            <div class="kriteria-box"><i class="bi bi-clock" style="font-size: 1rem; color:#0d6efd;"></i>  Timecard/Headquarter → pengisian sesuai aturan HR</div>
+            <div class="kriteria-box"><i class="bi bi-car-front" style="font-size: 1rem; color:#198754;"></i> Driver/McEasy → mengikuti rute / protokol keamanan</div>
+            <div class="kriteria-box"><i class="bi bi-wrench" style="font-size: 1rem; color:#fd7e14;"></i> Teknisi-FLM/Savina → mengikuti langkah servis sesuai SOP</div>
+
+            <input type="range" class="form-range mt-3" min="0" max="100" step="1" id="nilai4" value="75" oninput="hitungTotal()">
+            Nilai: <span class="slider-value" id="val4">75</span>
+          </div>
+        </div>
+
+        <!-- TOTAL -->
+        <div class="alert alert-primary text-center">
+          <h5>Total Nilai (Rata-rata)</h5>
+          <div class="total-box" id="totalNilai">75.00</div>
+          <button class="btn btn-outline-dark btn-sm mt-2" onclick="copyTotal()">📋 Copy Nilai</button>
+          <div id="copyInfo" class="text-success mt-1" style="display:none;">✔ Nilai berhasil disalin</div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+        <button class="btn btn-outline-danger btn-sm mt-2 ms-2" onclick="resetNilai()">
+  🔄 Reset Nilai
+</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
 <!-- ================= MODAL ================= -->
 <div class="modal fade" id="statusModal" tabindex="-1">
 <div class="modal-dialog modal-dialog-centered">
@@ -1443,6 +1543,61 @@ function hitungTotal(){
 
   return (nilaiBudaya+nilaiTarget+nilaiPersonal).toFixed(2);
 }
+
+
+/* =========================================================
+  HITUNG WORKLOAD BY APP
+========================================================= */
+
+function hitungTotal() {
+  let n1 = parseInt(nilai1.value);
+  let n2 = parseInt(nilai2.value);
+  let n3 = parseInt(nilai3.value);
+  let n4 = parseInt(nilai4.value);
+
+  val1.innerText = n1;
+  val2.innerText = n2;
+  val3.innerText = n3;
+  val4.innerText = n4;
+
+  let total = (n1 + n2 + n3 + n4) / 4;
+  totalNilai.innerText = total.toFixed(2);
+}
+
+function copyTotal() {
+  let text = document.getElementById("totalNilai").innerText;
+  navigator.clipboard.writeText(text);
+
+  copyInfo.style.display = "block";
+  setTimeout(() => {
+    copyInfo.style.display = "none";
+  }, 1500);
+}
+
+/* === FUNGSI RESET / REFRESH === */
+function resetNilai() {
+  nilai1.value = 0;
+  nilai2.value = 0;
+  nilai3.value = 0;
+  nilai4.value = 0;
+
+  val1.innerText = 0;
+  val2.innerText = 0;
+  val3.innerText = 0;
+  val4.innerText = 0;
+
+  totalNilai.innerText = "0.00";
+}
+
+
+
+
+
+
+
+
+
+
 
 /* =========================================================
    SAVE DATA
