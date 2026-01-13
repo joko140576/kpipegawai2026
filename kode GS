@@ -1,0 +1,97 @@
+function doPost(e) {
+
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const sh = ss.getSheetByName("DATA") || ss.insertSheet("DATA");
+
+  // ===== HEADER (HANYA SEKALI) =====
+  if (sh.getLastRow() === 0) {
+    sh.appendRow([
+      "Timestamp",
+
+      // PENILAI
+      "Nama Penilai",
+      "NPP Penilai",
+      "Jabatan Penilai",
+
+      // PEGAWAI
+      "Nama Pegawai",
+      "NPP",
+      "Divisi",
+      "Unit",
+      "Jabatan",
+
+      "Solid",
+      "Integritas",
+      "Adaptif",
+      "Profesional",
+
+      "Target Kerja Utama",
+      "Target Proses Kerja",
+      "Absensi (HRIS)",
+      "Workload",
+
+      "TOTAL SCORE"
+    ]);
+  }
+
+  // ===== AMBIL DATA =====
+  const d = JSON.parse(e.postData.contents);
+
+  // ===== NILAI =====
+  const solid        = Number(d.solid) || 0;
+  const integritas   = Number(d.integritas) || 0;
+  const adaptif      = Number(d.adaptif) || 0;
+  const profesional  = Number(d.profesional) || 0;
+
+  const targetUtama  = Number(d.targetUtama) || 0;
+  const targetProses = Number(d.targetProses) || 0;
+
+  const absensi      = Number(d.absensi) || 0;
+  const workload     = Number(d.workload) || 0;
+
+  // ===== PERHITUNGAN =====
+  const nilaiBudaya   = ((solid + integritas + adaptif + profesional) / 4) * 0.20;
+  const nilaiTarget   = ((targetUtama + targetProses) / 2) * 0.50;
+  const nilaiPersonal = ((absensi + workload) / 2) * 0.30;
+
+  const totalScore = Math.round(
+    (nilaiBudaya + nilaiTarget + nilaiPersonal) * 100
+  ) / 100;
+
+  // ===== SIMPAN DATA =====
+  sh.appendRow([
+    new Date(),
+
+    // DATA PENILAI
+    d.nama_penilai || "",
+    d.npp_penilai || "",
+    d.jabatan_penilai || "",
+
+    // DATA PEGAWAI
+    d.nama || "",
+    d.npp || "",
+    d.divisi || "",
+    d.unit || "",
+    d.jabatan || "",
+
+    solid,
+    integritas,
+    adaptif,
+    profesional,
+
+    targetUtama,
+    targetProses,
+    absensi,
+    workload,
+
+    totalScore
+  ]);
+
+  // ===== RESPONSE =====
+  return ContentService
+    .createTextOutput(JSON.stringify({
+      status: "success",
+      score: totalScore
+    }))
+    .setMimeType(ContentService.MimeType.JSON);
+}
