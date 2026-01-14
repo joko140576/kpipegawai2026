@@ -1574,7 +1574,9 @@ function copyTotal() {
   }, 1500);
 }
 
+
 /* === FUNGSI RESET / REFRESH === */
+
 function resetNilai() {
   nilai1.value = 0;
   nilai2.value = 0;
@@ -1588,14 +1590,6 @@ function resetNilai() {
 
   totalNilai.innerText = "0.00";
 }
-
-
-
-
-
-
-
-
 
 
 
@@ -1625,43 +1619,6 @@ function saveData(){
     })
   });
 }
-
-/* =========================================================
-   PRINT
-========================================================= */
-function printPDF(){
-
-
-  pNamaPenilai.innerText    = nama_penilai.value;
-  pNppPenilai.innerText     = npp_penilai.value;
-  pJabatanPenilai.innerText = jabatan_penilai.value;
-
-
-  pNama.innerText = nama.value;
-  pNpp.innerText = npp.value;
-  pDivisi.innerText = divisi.value;
-  pUnit.innerText = unit.value;
-  pJabatan.innerText = jabatan.value;
-
-  pSolid.innerText = solidNum.value;
-  pIntegritas.innerText = integrityNum.value;
-  pAdaptif.innerText = adaptifNum.value;
-  pProfesional.innerText = profesionalNum.value;
-  pTargetUtama.innerText = targetUtama.value;
-  pTargetProses.innerText = targetProses.value;
-  pAbsensi.innerText = absensiNum.value;
-  pWorkload.innerText = workloadNum.value;
-
-  pTotal.innerText = hitungTotal();
-  const printArea = document.getElementById("printArea");
-  printArea.classList.remove("d-none");
-
-  setTimeout(() => {
-    window.print();
-  }, 300);
-}
-
-
 
 function resetAccordion(){
   document.querySelectorAll(".accordion-collapse").forEach(el=>{
@@ -1707,10 +1664,77 @@ function resetForm(){
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
+
+function getNumber(id) {
+  return parseFloat(document.getElementById(id).value) || 0;
+}
+
+function hitungTotalKPI() {
+  const solid        = getNumber("solid");
+  const integrity    = getNumber("integrity");
+  const adaptif      = getNumber("adaptif");
+  const profesional  = getNumber("profesional");
+
+  const targetUtama  = getNumber("targetUtama");
+  const targetProses = getNumber("targetProses");
+
+  const absensi      = getNumber("absensiNum");
+  const workload     = getNumber("workloadNum");
+
+  /* === BOBOT === */
+  const personality = (solid + integrity + adaptif + profesional) / 4 * 0.20;
+  const targetKerja = (targetUtama + targetProses) / 2 * 0.50;
+  const absensiVal  = absensi * 0.15;
+  const workloadVal = workload * 0.15;
+
+  const total = personality + targetKerja + absensiVal + workloadVal;
+
+  return total.toFixed(2);
+}
+
+
+/* ================= PRINT PDF  ================= */
+
+
+function printPDF() {
+
+  // === ISI DATA KE AREA CETAK ===
+  document.getElementById("pNamaPenilai").innerText = nama_penilai.value;
+  document.getElementById("pNppPenilai").innerText = npp_penilai.value;
+  document.getElementById("pJabatanPenilai").innerText = jabatan_penilai.value;
+
+  document.getElementById("pNama").innerText = nama.value;
+  document.getElementById("pNpp").innerText = npp.value;
+  document.getElementById("pDivisi").innerText = divisi.value;
+  document.getElementById("pUnit").innerText = unit.value;
+  document.getElementById("pJabatan").innerText = jabatan.value;
+
+  document.getElementById("pSolid").innerText = solid.value;
+  document.getElementById("pIntegritas").innerText = integrity.value;
+  document.getElementById("pAdaptif").innerText = adaptif.value;
+  document.getElementById("pProfesional").innerText = profesional.value;
+
+  document.getElementById("pTargetUtama").innerText = targetUtama.value;
+  document.getElementById("pTargetProses").innerText = targetProses.value;
+  document.getElementById("pAbsensi").innerText = absensiNum.value;
+  document.getElementById("pWorkload").innerText = workloadNum.value;
+
+  // === HITUNG TOTAL KPI (INI KUNCI) ===
+  const totalKPI = hitungTotalKPI();
+  document.getElementById("pTotal").innerText = totalKPI;
+
+  // === TAMPILKAN AREA PRINT ===
+  document.getElementById("printArea").classList.remove("d-none");
+
+  window.print();
+
+  // === SEMBUNYIKAN LAGI ===
+  document.getElementById("printArea").classList.add("d-none");
+}
+
+
+
 </script>
-
-
-
 
 </body>
 </html>
