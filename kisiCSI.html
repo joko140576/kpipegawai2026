@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Penilaian KPI Divisi CSI</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+<style>
+body{ background:#f4f6f9; }
+input[type=number]{ width:90px; }
+.card-header{ font-weight:600; }
+</style>
+</head>
+
+<body>
+
+<div class="container my-4">
+
+<h4 class="text-center mb-4">
+<i class="bi bi-building"></i> Penilaian KPI Divisi CSI
+</h4>
+
+<!-- ================= TARGET KERJA ================= -->
+<div class="card mb-4">
+<div class="card-header bg-info text-white">
+A. KPI Target Kerja (Nilai Maksimal 100)
+</div>
+
+<div class="card-body p-0">
+<table class="table table-bordered mb-0">
+<thead class="table-light">
+<tr>
+  <th>No</th>
+  <th>Uraian KPI</th>
+  <th>Skor (0–100)</th>
+</tr>
+</thead>
+
+<tbody>
+<tr><td>1</td><td>Dukungan Sekretariat Direksi</td>
+<td><input type="number" min="0" max="100" class="form-control target" oninput="hitung()"></td></tr>
+
+<tr><td>2</td><td>Pengelolaan Rapat Direksi & Manajemen</td>
+<td><input type="number" min="0" max="100" class="form-control target" oninput="hitung()"></td></tr>
+
+<tr><td>3</td><td>Hubungan dengan Stakeholder Eksternal</td>
+<td><input type="number" min="0" max="100" class="form-control target" oninput="hitung()"></td></tr>
+
+<tr><td>4</td><td>Pengelolaan Legal & Kepatuhan Hukum</td>
+<td><input type="number" min="0" max="100" class="form-control target" oninput="hitung()"></td></tr>
+
+<tr><td>5</td><td>Kinerja & Keandalan Sistem IT</td>
+<td><input type="number" min="0" max="100" class="form-control target" oninput="hitung()"></td></tr>
+
+<tr><td>6</td><td>Keamanan Informasi & Data</td>
+<td><input type="number" min="0" max="100" class="form-control target" oninput="hitung()"></td></tr>
+</tbody>
+
+<tfoot class="table-secondary">
+<tr>
+<td colspan="2" class="text-end fw-bold">TOTAL NILAI TARGET KERJA</td>
+<td>
+  <span id="totalTarget">0</span>
+  <button class="btn btn-sm btn-outline-secondary ms-2"
+          onclick="copyText('totalTarget')">Copy</button>
+</td>
+</tr>
+</tfoot>
+</table>
+</div>
+</div>
+
+<!-- ================= PROSES KERJA ================= -->
+<div class="card mb-4">
+<div class="card-header bg-primary text-white">
+B. KPI Proses Kerja (Nilai Maksimal 100)
+</div>
+
+<div class="card-body p-0">
+<table class="table table-bordered mb-0">
+<thead class="table-light">
+<tr>
+  <th>No</th>
+  <th>Uraian KPI</th>
+  <th>Skor (0–100)</th>
+</tr>
+</thead>
+
+<tbody>
+<tr><td>1</td><td>Ketertiban Administrasi & Dokumentasi</td>
+<td><input type="number" min="0" max="100" class="form-control proses" oninput="hitung()"></td></tr>
+
+<tr><td>2</td><td>Kepatuhan SOP & GCG</td>
+<td><input type="number" min="0" max="100" class="form-control proses" oninput="hitung()"></td></tr>
+
+<tr><td>3</td><td>Koordinasi & Komunikasi Internal</td>
+<td><input type="number" min="0" max="100" class="form-control proses" oninput="hitung()"></td></tr>
+
+<tr><td>4</td><td>Manajemen Risiko Legal & IT</td>
+<td><input type="number" min="0" max="100" class="form-control proses" oninput="hitung()"></td></tr>
+
+<tr><td>5</td><td>Layanan IT & Helpdesk</td>
+<td><input type="number" min="0" max="100" class="form-control proses" oninput="hitung()"></td></tr>
+
+<tr><td>6</td><td>Peningkatan Sistem & Digitalisasi</td>
+<td><input type="number" min="0" max="100" class="form-control proses" oninput="hitung()"></td></tr>
+</tbody>
+
+<tfoot class="table-secondary">
+<tr>
+<td colspan="2" class="text-end fw-bold">TOTAL NILAI PROSES KERJA</td>
+<td>
+  <span id="totalProses">0</span>
+  <button class="btn btn-sm btn-outline-secondary ms-2"
+          onclick="copyText('totalProses')">Copy</button>
+</td>
+</tr>
+</tfoot>
+</table>
+</div>
+</div>
+
+</div>
+
+<script>
+function hitung(){
+  let totalTarget = 0;
+  let totalProses = 0;
+
+  const targetInputs = document.querySelectorAll(".target");
+  const prosesInputs = document.querySelectorAll(".proses");
+
+  targetInputs.forEach(i => totalTarget += parseFloat(i.value) || 0);
+  prosesInputs.forEach(i => totalProses += parseFloat(i.value) || 0);
+
+  document.getElementById("totalTarget").innerText =
+    (totalTarget / targetInputs.length).toFixed(2);
+
+  document.getElementById("totalProses").innerText =
+    (totalProses / prosesInputs.length).toFixed(2);
+}
+
+function copyText(id){
+  const text = document.getElementById(id).innerText;
+  navigator.clipboard.writeText(text)
+    .then(() => alert("Nilai berhasil dicopy: " + text));
+}
+</script>
+
+</body>
+</html>
