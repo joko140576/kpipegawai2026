@@ -1371,38 +1371,21 @@ Teknisi-FLM/Savina → jumlah tiket / pekerjaan lapangan diselesaikan sesuai jad
 </div>
 
 
-
-
-
-<!-- ================= MODAL ================= -->
-<div class="modal fade" id="statusModal" tabindex="-1">
-<div class="modal-dialog modal-dialog-centered">
-<div class="modal-content">
-
-<div class="modal-header bg-success text-white">
-<h5 class="modal-title">Status</h5>
-<button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+<!-- Modal Simple -->
+<div class="modal fade" id="successModal">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body text-center p-5">
+        <i class="bi bi-check-circle-fill text-success" style="font-size: 4rem;"></i>
+        <h4 class="mt-3">Berhasil Disimpan!</h4>
+        <p>Data KPI telah disimpan ke database.</p>
+        <button class="btn btn-success mt-2" data-bs-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
 </div>
 
-<div class="modal-body text-center">
-<div id="loadingBox">
-<div class="spinner-border text-primary"></div>
-<p>Menyimpan data KPI...</p>
-</div>
 
-<div id="successBox" class="d-none">
-<i class="bi bi-check-circle-fill text-success fs-1"></i>
-<p class="mt-2">Data berhasil disimpan</p>
-</div>
-</div>
-
-<div class="modal-footer d-none" id="modalFooter">
-<button class="btn btn-success w-100" data-bs-dismiss="modal">OK</button>
-</div>
-
-</div>
-</div>
-</div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -1594,31 +1577,76 @@ function resetNilai() {
 
 
 /* =========================================================
-   SAVE DATA
+   SAVE DATA (DENGAN MODAL)
 ========================================================= */
 function saveData(){
-  fetch(API_URL,{
-    method:"POST",
-    body: JSON.stringify({
-      nama_penilai:nama_penilai.value,
-      npp_penilai:npp_penilai.value,
-      jabatan_penilai:jabatan_penilai.value,
-      nama:nama.value,
-      npp:npp.value,
-      divisi:divisi.value,
-      unit:unit.value,
-      jabatan:jabatan.value,
-      solid:solidNum.value,
-      integritas:integrityNum.value,
-      adaptif:adaptifNum.value,
-      profesional:profesionalNum.value,
-      targetUtama:targetUtama.value,
-      targetProses:targetProses.value,
-      absensi:absensiNum.value,
-      workload:workloadNum.value
-    })
+  // Simpan data dulu ke variabel
+  const dataToSave = {
+    nama_penilai: document.getElementById("nama_penilai").value,
+    npp_penilai: document.getElementById("npp_penilai").value,
+    jabatan_penilai: document.getElementById("jabatan_penilai").value,
+    nama: document.getElementById("nama").value,
+    npp: document.getElementById("npp").value,
+    divisi: document.getElementById("divisi").value,
+    unit: document.getElementById("unit").value,
+    jabatan: document.getElementById("jabatan").value,
+    solid: solidNum.value,
+    integritas: integrityNum.value,
+    adaptif: adaptifNum.value,
+    profesional: profesionalNum.value,
+    targetUtama: document.getElementById("targetUtama").value,
+    targetProses: document.getElementById("targetProses").value,
+    absensi: document.getElementById("absensiNum").value,
+    workload: document.getElementById("workloadNum").value
+  };
+
+  // Kirim ke API
+  fetch(API_URL, {
+    method: "POST",
+    body: JSON.stringify(dataToSave)
+  })
+  .then(() => {
+    // Update print area
+    updatePrintArea();
+    
+    // Tampilkan modal sukses
+    const successModal = new bootstrap.Modal(document.getElementById('successModal'));
+    successModal.show();
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    alert("Gagal menyimpan data. Coba lagi.");
   });
 }
+
+/* =========================================================
+   UPDATE PRINT AREA
+========================================================= */
+function updatePrintArea() {
+  document.getElementById("pNamaPenilai").innerText = document.getElementById("nama_penilai").value || "-";
+  document.getElementById("pNppPenilai").innerText = document.getElementById("npp_penilai").value || "-";
+  document.getElementById("pJabatanPenilai").innerText = document.getElementById("jabatan_penilai").value || "-";
+
+  document.getElementById("pNama").innerText = document.getElementById("nama").value || "-";
+  document.getElementById("pNpp").innerText = document.getElementById("npp").value || "-";
+  document.getElementById("pDivisi").innerText = document.getElementById("divisi").value || "-";
+  document.getElementById("pUnit").innerText = document.getElementById("unit").value || "-";
+  document.getElementById("pJabatan").innerText = document.getElementById("jabatan").value || "-";
+
+  document.getElementById("pSolid").innerText = solidNum.value || "0";
+  document.getElementById("pIntegritas").innerText = integrityNum.value || "0";
+  document.getElementById("pAdaptif").innerText = adaptifNum.value || "0";
+  document.getElementById("pProfesional").innerText = profesionalNum.value || "0";
+
+  document.getElementById("pTargetUtama").innerText = document.getElementById("targetUtama").value || "0";
+  document.getElementById("pTargetProses").innerText = document.getElementById("targetProses").value || "0";
+  document.getElementById("pAbsensi").innerText = document.getElementById("absensiNum").value || "0";
+  document.getElementById("pWorkload").innerText = document.getElementById("workloadNum").value || "0";
+
+  const totalKPI = hitungTotalKPI();
+  document.getElementById("pTotal").innerText = totalKPI;
+}
+
 
 function resetAccordion(){
   document.querySelectorAll(".accordion-collapse").forEach(el=>{
@@ -1734,7 +1762,9 @@ function printPDF() {
 
 
 
+
 </script>
+
 
 </body>
 </html>
