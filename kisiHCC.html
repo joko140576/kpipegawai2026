@@ -62,7 +62,14 @@ input[type=number] { width:90px; }
       <tfoot class="table-secondary">
         <tr>
           <td colspan="5" class="text-end fw-bold">TOTAL KPI HASIL</td>
-          <td id="totalHasil">0%</td>
+          <td>
+            <span id="totalHasil">0%</span>
+            <button class="btn btn-sm btn-danger ms-2"
+                    onclick="copyText('totalHasil')">
+              Copy
+            </button>
+          </td>
+
         </tr>
       </tfoot>
     </table>
@@ -90,7 +97,14 @@ input[type=number] { width:90px; }
       <tfoot class="table-secondary">
         <tr>
           <td colspan="5" class="text-end fw-bold">TOTAL KPI PROSES</td>
-          <td id="totalProses">0%</td>
+          <td>
+            <span id="totalProses">0%</span>
+            <button class="btn btn-sm btn-danger ms-2"
+                    onclick="copyText('totalProses')">
+              Copy
+            </button>
+          </td>
+
         </tr>
       </tfoot>
     </table>
@@ -602,6 +616,21 @@ staf3: {
     ]
   }
 };
+
+/* ================= FUNCTION KOPI PASTE NILAI  ================= */
+
+function copyText(id){
+  const text = document.getElementById(id).innerText;
+
+  navigator.clipboard.writeText(text)
+    .then(() => {
+      alert("Nilai berhasil dicopy: " + text);
+    })
+    .catch(() => {
+      alert("Gagal menyalin nilai");
+    });
+}
+
 
 /* ================= PILIH KPI ================= */
 document.getElementById("kpiSelect").addEventListener("change", function(){
