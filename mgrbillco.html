@@ -37,7 +37,7 @@ input.nilai-input{
 <div class="container my-5">
     <div class="card shadow p-4">
 
-        <h3 class="mb-4 text-center fw-bold">FORM KPI PENILAIAN MANAGER & STAF BILLCO </h3>
+        <h3 class="mb-4 text-center fw-bold">FORM KPI PENILAIAN  MGR BILLCO </h3>
 
         <!-- ================== KPI TARGET UTAMA ================== -->
         <table class="table table-bordered align-middle">
@@ -74,9 +74,22 @@ input.nilai-input{
                     </td>
                 </tr>
 
-                <tr class="total-row text-center">
-                    <td colspan="3">TOTAL NILAI</td>
-                    <td id="totalUtama">0</td>
+                <!-- ==== TAMBAHKAN TOMBOL COPY DI TABEL 1 ==== -->
+
+                <tr class="table-primary fw-bold">
+                <td colspan="3" class="text-end">Total Nilai Target Utama</td>
+                <td class="text-center">
+                <div class="d-flex justify-content-center align-items-center gap-2">
+                <span id="totalUtama">0</span>
+                <button class="btn btn-sm btn-success"
+                onclick="copyText('totalUtama','notifUtama')">
+                Copy
+                </button>
+                </div>
+                <small id="notifUtama" class="text-success d-none">
+                ✔ Disalin!
+                </small>
+                </td>
                 </tr>
             </tbody>
         </table>
@@ -152,92 +165,93 @@ input.nilai-input{
                     </td>
                 </tr>
 
-                <tr class="total-row text-center">
-                    <td colspan="3">TOTAL NILAI</td>
-                    <td id="totalProses">0</td>
-                </tr>
-            </tbody>
-        </table>
 
-        <!-- ================== NILAI AKHIR ================== -->
-        <div class="text-center mt-4">
-            <h5 class="fw-bold">
-                Nilai Akhir = (Total Target Utama + Total Proses Kerja) : 4
-            </h5>
+                <!--==== TAMBAHKAN TOMBOL COPY DI TABEL 2 =====-->
 
-            <div class="d-flex justify-content-center align-items-center gap-3 mt-2">
-                <h2 class="fw-bold text-primary m-0">
-                    <span id="nilaiAkhir">0</span>
-                </h2>
-
-                <button class="btn btn-success btn-sm" onclick="copyNilaiAkhir()">
-                    Copy
+                <tr class="table-warning fw-bold">
+                <td colspan="3" class="text-end">Total Nilai Proses Kerja</td>
+                <td class="text-center">
+                <div class="d-flex justify-content-center align-items-center gap-2">
+                <span id="totalProses">0</span>
+                <button class="btn btn-sm btn-success"
+                onclick="copyText('totalProses','notifProses')">
+                Copy
                 </button>
-            </div>
+                </div>
+                <small id="notifProses" class="text-success d-none">
+                ✔ Disalin!
+                </small>
+                </td>
+                </tr>
 
-            <small id="copyNotif" class="text-success fw-bold d-none">
-                ✔ Berhasil disalin!
-            </small>
-        </div>
+
+            </tbody>
+        </table> 
 
     </div>
 </div>
 
-</body>
-</html>              
+         
 
 <script>
-// Hitung total (penjumlahan)
-function hitungTotal(selector, outputId){
-    let inputs = document.querySelectorAll(selector);
+
+// ====== ANGKA PEMBAGI ======
+const pembagiUtama = 1;
+const pembagiProses = 3;
+
+
+// ================= TARGET UTAMA =================
+function hitungTargetUtama(){
     let total = 0;
 
-    inputs.forEach(input=>{
-        let val = parseFloat(input.value);
-        if(!isNaN(val)){
-            total += val;
-        }
+    document.querySelectorAll(".nilai").forEach(input=>{
+        total += parseFloat(input.value) || 0;
     });
 
-    document.getElementById(outputId).innerText = total.toFixed(2);
-    hitungNilaiAkhir();
+    let hasil = total / pembagiUtama;
+    document.getElementById("totalUtama").innerText = hasil.toFixed(2);
 }
 
-// Hitung Nilai Akhir
-function hitungNilaiAkhir(){
-    let totalUtama = parseFloat(document.getElementById("totalUtama").innerText) || 0;
-    let totalProses = parseFloat(document.getElementById("totalProses").innerText) || 0;
 
-    let nilaiAkhir = (totalUtama + totalProses) / 4;
-    document.getElementById("nilaiAkhir").innerText = nilaiAkhir.toFixed(2);
+// ================= PROSES KERJA =================
+function hitungProsesKerja(){
+    let total = 0;
+
+    document.querySelectorAll(".nilai2").forEach(input=>{
+        total += parseFloat(input.value) || 0;
+    });
+
+    let hasil = total / pembagiProses;
+    document.getElementById("totalProses").innerText = hasil.toFixed(2);
 }
 
-// Event realtime
+
+// ================= EVENT =================
 document.querySelectorAll(".nilai").forEach(input=>{
-    input.addEventListener("input", ()=>hitungTotal(".nilai", "totalUtama"));
+    input.addEventListener("input", hitungTargetUtama);
 });
 
 document.querySelectorAll(".nilai2").forEach(input=>{
-    input.addEventListener("input", ()=>hitungTotal(".nilai2", "totalProses"));
+    input.addEventListener("input", hitungProsesKerja);
 });
 
 
-// Fungsi Copy
-function copyNilaiAkhir(){
-    let nilai = document.getElementById("nilaiAkhir").innerText;
+// ================= COPY =================
+function copyText(elementId, notifId) {
+    let text = document.getElementById(elementId).innerText;
 
-    navigator.clipboard.writeText(nilai).then(()=>{
-        let notif = document.getElementById("copyNotif");
+    navigator.clipboard.writeText(text).then(function() {
+        let notif = document.getElementById(notifId);
         notif.classList.remove("d-none");
-
-        setTimeout(()=>{
+        setTimeout(function() {
             notif.classList.add("d-none");
         }, 1500);
     });
 }
 
 </script>
+</body>
+</html>
 
 </body>
-
 </html>
