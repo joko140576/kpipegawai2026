@@ -77,9 +77,22 @@ body{
 </td>
 </tr>
 
-<tr class="total-row text-center">
-<td colspan="3">TOTAL NILAI</td>
-<td id="totalUtama">0</td>
+<!-- ==== TAMBAHKAN TOMBOL COPY DI TABEL 1 ==== -->
+
+<tr class="table-primary fw-bold">
+<td colspan="3" class="text-end">Total Nilai Target Utama</td>
+<td class="text-center">
+<div class="d-flex justify-content-center align-items-center gap-2">
+<span id="totalUtama">0</span>
+<button class="btn btn-sm btn-success"
+onclick="copyText('totalUtama','notifUtama')">
+Copy
+</button>
+</div>
+<small id="notifUtama" class="text-success d-none">
+✔ Disalin!
+</small>
+</td>
 </tr>
 
 </tbody>
@@ -146,9 +159,22 @@ body{
 </td>
 </tr>
 
-<tr class="total-row text-center">
-<td colspan="3">TOTAL NILAI</td>
-<td id="totalProses">0</td>
+<!--==== TAMBAHKAN TOMBOL COPY DI TABEL 2 =====-->
+
+<tr class="table-warning fw-bold">
+<td colspan="3" class="text-end">Total Nilai Proses Kerja</td>
+<td class="text-center">
+<div class="d-flex justify-content-center align-items-center gap-2">
+<span id="totalProses">0</span>
+<button class="btn btn-sm btn-success"
+onclick="copyText('totalProses','notifProses')">
+Copy
+</button>
+</div>
+<small id="notifProses" class="text-success d-none">
+✔ Disalin!
+</small>
+</td>
 </tr>
 
 </tbody>
@@ -156,60 +182,64 @@ body{
 
 </div>
 </div>
-<!-- ================= NILAI AKHIR ================= -->
-<div class="text-center mt-4">
-<h5 class="fw-bold">Nilai Akhir = (Total Target Utama + Total Proses Kerja) : 4</h5>
 
-<div class="d-flex justify-content-center align-items-center gap-3 mt-2">
-<h2 class="fw-bold text-primary m-0">
-<span id="nilaiAkhir">0</span>
-</h2>
-<button class="btn btn-success btn-sm" onclick="copyNilaiAkhir()">Copy</button>
-</div>
 
-<small id="copyNotif" class="text-success fw-bold d-none">
-✔ Berhasil disalin!
-</small>
-</div>
 
-</div>
-</div>
 <script>
 
-// Hitung Total
-function hitungTotal(selector, outputId){
-let total = 0;
-document.querySelectorAll(selector).forEach(input=>{
-let val = parseFloat(input.value);
-if(!isNaN(val)) total += val;
-});
-document.getElementById(outputId).innerText = total.toFixed(2);
-hitungNilaiAkhir();
+// ====== ANGKA PEMBAGI (UBAH DI SINI SAJA) ======
+const pembagiUtama = 1;   // jumlah pembagi tabel 1
+const pembagiProses = 3;  // jumlah pembagi tabel 2
+
+
+// ================= TARGET UTAMA =================
+function hitungTargetUtama(){
+    let total = 0;
+
+    document.querySelectorAll(".nilaiUtama").forEach(input=>{
+        total += parseFloat(input.value) || 0;
+    });
+
+    let hasil = total / pembagiUtama;
+    document.getElementById("totalUtama").innerText = hasil.toFixed(2);
 }
 
-function hitungNilaiAkhir(){
-let t1 = parseFloat(document.getElementById("totalUtama").innerText) || 0;
-let t2 = parseFloat(document.getElementById("totalProses").innerText) || 0;
-let hasil = (t1 + t2) / 4;
-document.getElementById("nilaiAkhir").innerText = hasil.toFixed(2);
+
+// ================= PROSES KERJA =================
+function hitungProsesKerja(){
+    let total = 0;
+
+    document.querySelectorAll(".nilaiProses").forEach(input=>{
+        total += parseFloat(input.value) || 0;
+    });
+
+    let hasil = total / pembagiProses;
+    document.getElementById("totalProses").innerText = hasil.toFixed(2);
 }
 
-// Event
+
+// ================= EVENT =================
 document.querySelectorAll(".nilaiUtama").forEach(input=>{
-input.addEventListener("input", ()=>hitungTotal(".nilaiUtama","totalUtama"));
-});
-document.querySelectorAll(".nilaiProses").forEach(input=>{
-input.addEventListener("input", ()=>hitungTotal(".nilaiProses","totalProses"));
+    input.addEventListener("input", hitungTargetUtama);
 });
 
-// Copy
-function copyNilaiAkhir(){
-let nilai = document.getElementById("nilaiAkhir").innerText;
-navigator.clipboard.writeText(nilai).then(()=>{
-let notif = document.getElementById("copyNotif");
-notif.classList.remove("d-none");
-setTimeout(()=>{ notif.classList.add("d-none"); },1500);
+document.querySelectorAll(".nilaiProses").forEach(input=>{
+    input.addEventListener("input", hitungProsesKerja);
 });
+
+
+// ================= COPY =================
+function copyText(elementId, notifId) {
+    let text = document.getElementById(elementId).innerText;
+
+    navigator.clipboard.writeText(text).then(function() {
+        let notif = document.getElementById(notifId);
+        notif.classList.remove("d-none");
+
+        setTimeout(function() {
+            notif.classList.add("d-none");
+        }, 1500);
+    });
 }
 
 </script>
