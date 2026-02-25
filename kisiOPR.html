@@ -24,7 +24,9 @@ input[type=number] { width:90px; }
 <div class="mb-4">
   <label class="form-label fw-bold">Pilih Jenis KPI Pegawai</label>
   <select id="kpiSelect" class="form-select">
-    <option value="">-- Pilih --</option>    
+    <option value="">-- Pilih --</option>   
+    <option value="ceo">KPI CEO Region</option>
+    <option value="deputy">KPI Deputy </option>
     <option value="manager">KPI Manager / Asmen</option>
     <option value="kasir">KPI Kasir</option>
     <option value="custody">KPI Custody</option>
@@ -109,6 +111,117 @@ input[type=number] { width:90px; }
 /* ================= DATA KPI SESUAI EXCEL ================= */
 const dataKPI = {
 
+ceo: {
+  hasil: [
+    {
+      kpi: "Pencapaian Revenue Regional ",
+      target: "YoY Growth",
+      bobot: 25
+    },
+    {
+      kpi: "Cost Effeciency regional",
+      target: " YoY Decline",
+      bobot: 25
+    },
+    {
+      kpi: "Penambahan client/nasabah baru ",
+      target: "Customer Growth",
+      bobot: 15
+    },
+    {
+      kpi: "SLA Regional tercapai ",
+      target: "Positive MoM Trend",
+      bobot: 10
+    },
+    {
+      kpi: "Penekanan Fraud & pelanggaran SOP",
+      target: "0 kasus",
+      bobot: 10
+    },
+    {
+      kpi: "Kepuasan pelanggan ",
+      target: " no complaint ",
+      bobot:15
+    }
+  ],
+
+  proses: [
+    {
+      kpi: "Implementasi SOP & Compliance regional ",
+      target: "SOP & dual control",
+      bobot: 25
+    },
+    {
+      kpi: "Pengelolaan tim operasional",
+      target: "Produktivitas & coverage",
+      bobot: 25
+    },
+    
+    {
+      kpi: "Perencanaan & kontrol COU regional ",
+      target: "SLA tercapai",
+      bobot: 25
+    },
+    
+    {
+      kpi: "Koordinasi lintas fungsi & stakeholder",
+      target: "Efektif",
+      bobot: 25
+    }    
+  ]
+},
+
+deputy: {
+  hasil: [
+    {
+      kpi: "Pencapaian Revenue Regional ",
+      target: "YoY Growth",
+      bobot: 25
+    },
+    {
+      kpi: "Cost Effeciency regional",
+      target: " YoY Decline",
+      bobot: 25
+    },    
+    {
+      kpi: "SLA Regional tercapai ",
+      target: "Positive MoM Trend",
+      bobot: 20
+    },
+    {
+      kpi: "Penekanan Fraud & pelanggaran SOP",
+      target: "0 kasus",
+      bobot: 20
+    },
+    {
+      kpi: "Kepuasan pelanggan ",
+      target: " no complaint ",
+      bobot:10
+    }
+  ],
+
+  proses: [
+    {
+      kpi: "Implementasi SOP & Compliance regional ",
+      target: "SOP & dual control",
+      bobot: 30
+    },
+    {
+      kpi: "Pengelolaan tim operasional",
+      target: "Produktivitas & coverage",
+      bobot:35
+    },
+    
+    {
+      kpi: "Perencanaan & kontrol COU regional ",
+      target: "SLA tercapai",
+      bobot: 35
+    }
+    
+   
+  ]
+},
+ 
 manager: {
   hasil: [
     {
