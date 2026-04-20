@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Data Penilaian</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+body {
+    background: #f5f6fa;
+}
+.table-container {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+.pagination {
+    justify-content: center;
+}
+
+}
+#loadingBox {
+    display: none;
+    opacity: 0;
+    transition: 0.5s;
+}
+
+#loadingBox.show {
+    display: block;
+    opacity: 1;
+}
+</style>
+
+</head>
+<body>
+
+<div class="container mt-4">
+    <h3 class="text-center mb-4">📊 Data Penilaian</h3>
+    <div id="loadingBox" class="text-center my-4">
+    <div class="spinner-border text-primary" role="status"></div>
+    <p class="mt-2 fw-bold">Data masih di-load...</p>
+</div>
+    <div class="table-container">
+        <table class="table table-bordered table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>Tanggal input</th>
+                    <th>Nama Penilai</th>
+                    <th>NPP Penilai</th>
+                    <th>Jabatan Penilai</th>
+                    <th>Pegawai yg Dinilai</th>
+                    <th>NPP</th>
+                    <th>Divisi</th>
+                    <th>Unit</th>
+                    <th>Jabatan</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+        </table>
+
+        <nav>
+            <ul class="pagination" id="pagination"></ul>
+        </nav>
+    </div>
+</div>
+
+<script>
+const API_URL = "https://script.google.com/macros/s/AKfycbyviSSHg8hyvp7L7lVVHwA2Pej6_oSsV7Cwp51DioFlWHpj0BRCyklhQEex7qhuiQL9AQ/exec";
+const rowsPerPage = 100;
+
+let dataGlobal = [];
+let currentPage = 1;
+
+const loadingBox = document.getElementById("loadingBox");
+
+loadingBox.style.display = "block"; // tampilkan loading
+
+fetch(API_URL)
+.then(res => res.json())
+.then(data => {
+    dataGlobal = data;
+
+    renderTable();
+    renderPagination();
+
+    loadingBox.style.display = "none"; // sembunyikan loading
+})
+.catch(err => {
+    loadingBox.innerHTML = `
+        <p class="text-danger">Gagal memuat data 😢</p>
+    `;
+});
+
+
+
+function renderTable() {
+    const start = (currentPage - 1) * rowsPerPage;
+    const end = start + rowsPerPage;
+    const data = dataGlobal.slice(start, end);
+
+    let html = "";
+    data.forEach(row => {
+        html += `
+        <tr>
+            <td>${row.Waktu_input}</td>
+            <td>${row.Nama_Penilai}</td>
+            <td>${row.NPP_Penilai}</td>
+            <td>${row.Jabatan_Penilai}</td>
+            <td>${row.Pegawai_Dinilai}</td>
+            <td>${row.NPP}</td>
+            <td>${row.Divisi}</td>
+            <td>${row.Unit}</td>
+            <td>${row.Jabatan}</td>
+        </tr>`;
+    });
+
+    document.getElementById("tableBody").innerHTML = html;
+}
+
+function renderPagination() {
+    const totalPages = Math.ceil(dataGlobal.length / rowsPerPage);
+    let html = "";
+
+    for (let i = 1; i <= totalPages; i++) {
+        html += `
+        <li class="page-item ${i === currentPage ? 'active' : ''}">
+            <a class="page-link" href="#" onclick="changePage(${i})">${i}</a>
+        </li>`;
+    }
+
+    document.getElementById("pagination").innerHTML = html;
+}
+
+function changePage(page) {
+    currentPage = page;
+    renderTable();
+    renderPagination();
+}
+
+
+
+
+</script>
+
+</body>
+</html>
