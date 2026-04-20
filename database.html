@@ -43,7 +43,7 @@ body {
     <p class="mt-2 fw-bold">Data masih di-load...</p>
 </div>
 
-<input type="text" id="searchInput" class="form-control mb-3" placeholder="Cari Nama Penilai / Nama Pegawai...">
+<input type="text" id="searchInput" class="form-control mb-3" placeholder="Cari : Divisi / Nama Penilai / Nama Pegawai...">
     <div class="table-container">
         <table class="table table-bordered table-striped">
             <thead class="table-dark">
@@ -157,7 +157,8 @@ document.getElementById("searchInput").addEventListener("keyup", function(){
 
     dataFiltered = dataGlobal.filter(row =>
         (row.Nama_Penilai && row.Nama_Penilai.toLowerCase().includes(keyword)) ||
-        (row.Pegawai_Dinilai && row.Pegawai_Dinilai.toLowerCase().includes(keyword))
+        (row.Pegawai_Dinilai && row.Pegawai_Dinilai.toLowerCase().includes(keyword)) ||
+        (row.Divisi && row.Divisi.toLowerCase().includes(keyword))
     );
 
     currentPage = 1;
