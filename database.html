@@ -42,6 +42,8 @@ body {
     <div class="spinner-border text-primary" role="status"></div>
     <p class="mt-2 fw-bold">Data masih di-load...</p>
 </div>
+
+<input type="text" id="searchInput" class="form-control mb-3" placeholder="Cari Nama Penilai / Nama Pegawai...">
     <div class="table-container">
         <table class="table table-bordered table-striped">
             <thead class="table-dark">
@@ -68,10 +70,12 @@ body {
 
 <script>
 const API_URL = "https://script.google.com/macros/s/AKfycbyviSSHg8hyvp7L7lVVHwA2Pej6_oSsV7Cwp51DioFlWHpj0BRCyklhQEex7qhuiQL9AQ/exec";
-const rowsPerPage = 100;
 
 let dataGlobal = [];
+let dataFiltered = [];
 let currentPage = 1;
+const rowsPerPage = 100;
+
 
 const loadingBox = document.getElementById("loadingBox");
 
@@ -93,34 +97,40 @@ fetch(API_URL)
     `;
 });
 
-
-
 function renderTable() {
+    const dataSource = dataFiltered.length ? dataFiltered : dataGlobal;
+
     const start = (currentPage - 1) * rowsPerPage;
     const end = start + rowsPerPage;
-    const data = dataGlobal.slice(start, end);
+
+    const data = dataSource.slice(start, end);
 
     let html = "";
+
     data.forEach(row => {
         html += `
         <tr>
-            <td>${row.Waktu_input}</td>
-            <td>${row.Nama_Penilai}</td>
-            <td>${row.NPP_Penilai}</td>
-            <td>${row.Jabatan_Penilai}</td>
-            <td>${row.Pegawai_Dinilai}</td>
-            <td>${row.NPP}</td>
-            <td>${row.Divisi}</td>
-            <td>${row.Unit}</td>
-            <td>${row.Jabatan}</td>
+            <td>${row["Waktu_Input"] || '-'}</td>
+            <td>${row["Nama_Penilai"] || '-'}</td>
+            <td>${row["NPP_Penilai"] || '-'}</td>
+            <td>${row["Jabatan_Penilai"] || '-'}</td>
+            <td>${row["Pegawai_Dinilai"] || '-'}</td>
+            <td>${row["NPP"] || '-'}</td>
+            <td>${row["Divisi"] || '-'}</td>
+            <td>${row["Unit"] || '-'}</td>
+            <td>${row["Jabatan"] || '-'}</td>
         </tr>`;
     });
 
     document.getElementById("tableBody").innerHTML = html;
 }
 
+
 function renderPagination() {
-    const totalPages = Math.ceil(dataGlobal.length / rowsPerPage);
+    const dataSource = dataFiltered.length ? dataFiltered : dataGlobal;
+
+    const totalPages = Math.ceil(dataSource.length / rowsPerPage);
+
     let html = "";
 
     for (let i = 1; i <= totalPages; i++) {
@@ -133,12 +143,27 @@ function renderPagination() {
     document.getElementById("pagination").innerHTML = html;
 }
 
+
+
+
 function changePage(page) {
     currentPage = page;
     renderTable();
     renderPagination();
 }
 
+document.getElementById("searchInput").addEventListener("keyup", function(){
+    const keyword = this.value.toLowerCase();
+
+    dataFiltered = dataGlobal.filter(row =>
+        (row.Nama_Penilai && row.Nama_Penilai.toLowerCase().includes(keyword)) ||
+        (row.Pegawai_Dinilai && row.Pegawai_Dinilai.toLowerCase().includes(keyword))
+    );
+
+    currentPage = 1;
+    renderTable();
+    renderPagination();
+});
 
 
 
