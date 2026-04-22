@@ -32,6 +32,7 @@ input[type=number] { width:90px; }
     <option value="custody">KPI Custody</option>
     <option value="flm">KPI FLM</option>
     <option value="admin">KPI Admin</option>
+    <option value="slm">KPI SLM</option>
   </select>
 </div>
 
@@ -548,7 +549,71 @@ custody: {
       bobot: 10
     }
     ]
-  }
+  },
+
+  slm: {
+  hasil: [
+    {
+      kpi: "Pencapaian SLA ",
+      target: "tercapai sesuai PKS",
+      bobot: 30
+    },
+    {
+      kpi: "Penurunan Pinalty ",
+      target: "Sesuai target ",
+      bobot: 30
+    },
+    {
+      kpi: "penurunan Repeat problem",
+      target: " tidak lebih dari 2X",
+      bobot: 20
+    },
+    {
+      kpi: "Minimasi penggunaan Part ",
+      target: "sesuai penggunaannya / tidak boros",
+      bobot: 10
+    },
+    {
+      kpi: "Kualitas laporan & dokumentasi",
+      target: "100%",
+      bobot: 10
+    }
+  ],
+
+  proses: [
+    {
+      kpi: " Ketersediaan alat / Tool kerja ",
+      target: "lengkap sesuai standar ",
+      bobot: 20
+    },
+    {
+      kpi: "Penyelesaian problem",
+      target: "Cepat, tepat dan skill Upgrade",
+      bobot: 25
+    },
+    {
+      kpi: "Perawatan & perbaikan mesin ",
+      target: "Sesuai jadwal & terdokumentasi",
+      bobot: 20
+    },
+    {
+      kpi: "Permintaan & pengiriman Part",
+      target: "Berjalan lancar",
+      bobot: 15
+    },
+    {
+      kpi: "Pelaporan gangguan & perbaikan",
+      target: "Terdokumentasi lengkap",
+      bobot: 10
+    },
+    {
+      kpi: "Koordinasi dengan  pihak terkait",
+      target: "komunikasi 2 arah berjalan baik ",
+      bobot: 10
+    }
+  ]
+}
+
 };
 
 
