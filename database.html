@@ -1,174 +1,601 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<title>Data Penilaian</title>
-
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sistem Penilaian Karyawan</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
 <style>
-body {
-    background: #f5f6fa;
-}
-.table-container {
-    background: white;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-}
-.pagination {
-    justify-content: center;
-}
+  /* ── Reset & Variables ─────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-}
-#loadingBox {
-    display: none;
-    opacity: 0;
-    transition: 0.5s;
-}
+  :root {
+    --bg        : #0b0f1a;
+    --surface   : #111827;
+    --surface2  : #1a2235;
+    --border    : #1e2d42;
+    --accent    : #3b82f6;
+    --accent2   : #06b6d4;
+    --gold      : #f59e0b;
+    --text      : #e2e8f0;
+    --muted     : #64748b;
+    --success   : #10b981;
+    --danger    : #ef4444;
+    --radius    : 12px;
+    --radius-sm : 8px;
+    --shadow    : 0 4px 24px rgba(0,0,0,.45);
+  }
 
-#loadingBox.show {
-    display: block;
-    opacity: 1;
-}
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 14px;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── Background Mesh ───────────────────────────────── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 0;
+    background:
+      radial-gradient(ellipse 80% 50% at 20% -10%, rgba(59,130,246,.18) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 40% at 80% 110%, rgba(6,182,212,.12) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  /* ── Layout ────────────────────────────────────────── */
+  .wrapper {
+    position: relative; z-index: 1;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px 60px;
+  }
+
+  /* ── Header ────────────────────────────────────────── */
+  header {
+    padding: 40px 0 32px;
+    display: flex; align-items: flex-start; justify-content: space-between;
+    flex-wrap: wrap; gap: 16px;
+  }
+  .header-title { display: flex; flex-direction: column; gap: 6px; }
+  .header-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(59,130,246,.15);
+    border: 1px solid rgba(59,130,246,.3);
+    color: var(--accent); border-radius: 20px;
+    padding: 4px 12px; font-size: 11px; font-weight: 600; letter-spacing: .5px;
+    width: fit-content;
+  }
+  .badge-dot { width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+
+  header h1 {
+    font-size: clamp(22px, 4vw, 34px);
+    font-weight: 800;
+    background: linear-gradient(135deg, #fff 0%, var(--accent2) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.15;
+  }
+  header p { color: var(--muted); font-size: 13px; }
+
+  .stat-pills { display: flex; gap: 12px; flex-wrap: wrap; }
+  .pill {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: var(--radius-sm); padding: 10px 18px;
+    display: flex; flex-direction: column; align-items: center; min-width: 90px;
+  }
+  .pill span:first-child {
+    font-family: 'DM Mono', monospace;
+    font-size: 22px; font-weight: 500; color: var(--accent);
+  }
+  .pill span:last-child { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing:.6px; margin-top:2px; }
+
+  /* ── Search Bar ────────────────────────────────────── */
+  .search-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    margin-bottom: 20px;
+    display: flex; flex-direction: column; gap: 16px;
+    box-shadow: var(--shadow);
+  }
+  .search-row { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; gap: 12px; }
+  @media(max-width:900px){ .search-row { grid-template-columns: 1fr 1fr; } }
+  @media(max-width:540px){ .search-row { grid-template-columns: 1fr; } }
+
+  .field { display: flex; flex-direction: column; gap: 5px; }
+  .field label { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; }
+
+  input[type="text"] {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: var(--radius-sm);
+    padding: 9px 14px;
+    font-family: inherit; font-size: 13px;
+    transition: border-color .2s, box-shadow .2s;
+    width: 100%;
+    outline: none;
+  }
+  input[type="text"]:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(59,130,246,.18);
+  }
+  input::placeholder { color: var(--muted); }
+
+  .search-actions { display: flex; gap: 10px; justify-content: flex-end; }
+
+  /* ── Buttons ───────────────────────────────────────── */
+  .btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    border: none; border-radius: var(--radius-sm);
+    padding: 9px 20px; font-family: inherit; font-size: 13px;
+    font-weight: 600; cursor: pointer; transition: all .2s; white-space: nowrap;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #fff; box-shadow: 0 2px 12px rgba(59,130,246,.35);
+  }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 18px rgba(59,130,246,.45); }
+  .btn-ghost {
+    background: var(--surface2); color: var(--muted);
+    border: 1px solid var(--border);
+  }
+  .btn-ghost:hover { color: var(--text); border-color: var(--muted); }
+
+  /* ── Page-size selector ────────────────────────────── */
+  .toolbar {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 12px; flex-wrap: wrap; gap: 10px;
+  }
+  .toolbar-left { display: flex; align-items: center; gap: 10px; color: var(--muted); font-size: 12px; }
+  select {
+    background: var(--surface2); border: 1px solid var(--border);
+    color: var(--text); border-radius: var(--radius-sm);
+    padding: 6px 10px; font-family: inherit; font-size: 12px; cursor: pointer;
+  }
+
+  /* ── Table ─────────────────────────────────────────── */
+  .table-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: auto;
+    box-shadow: var(--shadow);
+    animation: fadeUp .4s ease both;
+  }
+  @keyframes fadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:none; } }
+
+  table { width: 100%; border-collapse: collapse; white-space: nowrap; }
+
+  thead tr {
+    background: linear-gradient(90deg, rgba(59,130,246,.12), rgba(6,182,212,.08));
+    border-bottom: 1px solid var(--border);
+  }
+  th {
+    padding: 13px 16px;
+    font-size: 11px; font-weight: 700; letter-spacing: .5px;
+    text-transform: uppercase; color: var(--accent2);
+    text-align: left; user-select: none; white-space: nowrap;
+  }
+  th:first-child { color: var(--muted); }
+
+  tbody tr {
+    border-bottom: 1px solid rgba(30,45,66,.7);
+    transition: background .15s;
+  }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: rgba(59,130,246,.06); }
+
+  td {
+    padding: 12px 16px;
+    font-size: 13px; color: var(--text);
+    vertical-align: middle;
+  }
+  td:first-child { /* No */
+    font-family: 'DM Mono', monospace;
+    font-size: 12px; color: var(--muted);
+    text-align: center; width: 50px;
+  }
+
+  /* Badges */
+  .badge-divisi {
+    display: inline-block; padding: 3px 10px;
+    border-radius: 20px; font-size: 11px; font-weight: 600;
+    background: rgba(6,182,212,.15); color: var(--accent2);
+    border: 1px solid rgba(6,182,212,.25);
+  }
+  .badge-jabatan {
+    display: inline-block; padding: 3px 10px;
+    border-radius: 20px; font-size: 11px; font-weight: 600;
+    background: rgba(245,158,11,.12); color: var(--gold);
+    border: 1px solid rgba(245,158,11,.25);
+  }
+  .mono { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--muted); }
+
+  /* ── Empty / Loading ───────────────────────────────── */
+  .state-row td {
+    text-align: center; padding: 60px 20px;
+    color: var(--muted); font-size: 13px;
+  }
+  .spinner {
+    width: 32px; height: 32px;
+    border: 3px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin .7s linear infinite;
+    margin: 0 auto 16px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ── Pagination ────────────────────────────────────── */
+  .pagination-wrap {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-top: 20px; flex-wrap: wrap; gap: 12px;
+  }
+  .page-info { font-size: 12px; color: var(--muted); }
+  .page-btns { display: flex; gap: 4px; flex-wrap: wrap; }
+
+  .pg-btn {
+    min-width: 34px; height: 34px;
+    background: var(--surface2); border: 1px solid var(--border);
+    color: var(--muted); border-radius: var(--radius-sm);
+    font-family: 'DM Mono', monospace; font-size: 12px;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: all .15s; padding: 0 8px;
+  }
+  .pg-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .pg-btn.active {
+    background: var(--accent); border-color: var(--accent);
+    color: #fff; font-weight: 700;
+  }
+  .pg-btn:disabled { opacity: .3; cursor: default; }
+  .pg-ellipsis { display:flex;align-items:center;color:var(--muted);padding:0 4px;font-size:13px; }
+
+  /* ── Toast ─────────────────────────────────────────── */
+  #toast {
+    position: fixed; bottom: 28px; right: 28px;
+    background: var(--surface2); border: 1px solid var(--border);
+    color: var(--text); border-radius: var(--radius-sm);
+    padding: 12px 20px; font-size: 13px;
+    box-shadow: var(--shadow); z-index: 999;
+    transform: translateY(20px); opacity: 0;
+    transition: all .3s; pointer-events: none;
+  }
+  #toast.show { transform: none; opacity: 1; }
+  #toast.error { border-left: 3px solid var(--danger); }
 </style>
-
 </head>
 <body>
+<div class="wrapper">
 
-<div class="container mt-4">
-    <h3 class="text-center mb-4">📊 Data Penilaian</h3>
-    <div id="loadingBox" class="text-center my-4">
-    <div class="spinner-border text-primary" role="status"></div>
-    <p class="mt-2 fw-bold">Data masih di-load...</p>
-</div>
-
-<input type="text" id="searchInput" class="form-control mb-3" placeholder="Cari : Divisi / Nama Penilai / Nama Pegawai...">
-    <div class="table-container">
-        <table class="table table-bordered table-striped">
-            <thead class="table-dark">
-                <tr>
-                    <th>Tanggal input</th>
-                    <th>Nama Penilai</th>
-                    <th>NPP Penilai</th>
-                    <th>Jabatan Penilai</th>
-                    <th>Pegawai yg Dinilai</th>
-                    <th>NPP</th>
-                    <th>Divisi</th>
-                    <th>Unit</th>
-                    <th>Jabatan</th>
-                </tr>
-            </thead>
-            <tbody id="tableBody"></tbody>
-        </table>
-
-        <nav>
-            <ul class="pagination" id="pagination"></ul>
-        </nav>
+  <!-- Header -->
+  <header>
+    <div class="header-title">
+      <div class="header-badge"><span class="badge-dot"></span> Live Data</div>
+      <h1>Sistem Penilaian Karyawan</h1>
+      <p>Data terintegrasi dari Google Sheets · Diperbarui otomatis</p>
     </div>
-</div>
+    <div class="stat-pills">
+      <div class="pill">
+        <span id="statTotal">—</span>
+        <span>Total Data</span>
+      </div>
+      <div class="pill">
+        <span id="statShown">—</span>
+        <span>Ditampilkan</span>
+      </div>
+      <div class="pill">
+        <span id="statPage">—</span>
+        <span>Halaman</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Search -->
+  <div class="search-section">
+    <div class="search-row">
+      <div class="field">
+        <label>🔍 Pencarian Global</label>
+        <input type="text" id="q" placeholder="Cari semua kolom…" />
+      </div>
+      <div class="field">
+        <label>Nama Penilai</label>
+        <input type="text" id="namaPenilai" placeholder="Nama penilai…" />
+      </div>
+      <div class="field">
+        <label>Pegawai Dinilai</label>
+        <input type="text" id="pegawai" placeholder="Nama pegawai…" />
+      </div>
+      <div class="field">
+        <label>NPP</label>
+        <input type="text" id="npp" placeholder="Nomor NPP…" />
+      </div>
+      <div class="field">
+        <label>Divisi</label>
+        <input type="text" id="divisi" placeholder="Divisi…" />
+      </div>
+    </div>
+    <div class="search-actions">
+      <button class="btn btn-ghost" onclick="resetSearch()">↺ Reset</button>
+      <button class="btn btn-primary" onclick="search()">Cari Data</button>
+    </div>
+  </div>
+
+  <!-- Toolbar -->
+  <div class="toolbar">
+    <div class="toolbar-left">
+      Tampilkan
+      <select id="pageSizeSelect" onchange="changePageSize()">
+        <option value="10">10</option>
+        <option value="20" selected>20</option>
+        <option value="50">50</option>
+        <option value="100">100</option>
+      </select>
+      baris per halaman
+    </div>
+    <span id="rangeInfo" style="font-size:12px;color:var(--muted)"></span>
+  </div>
+
+  <!-- Table -->
+  <div class="table-wrap">
+    <table id="mainTable">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Tanggal Input</th>
+          <th>Nama Penilai</th>
+          <th>NPP Penilai</th>
+          <th>Jabatan Penilai</th>
+          <th>Pegawai Yang Dinilai</th>
+          <th>NPP</th>
+          <th>Divisi</th>
+          <th>Unit</th>
+          <th>Jabatan</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody">
+        <tr class="state-row"><td colspan="10">
+          <div class="spinner"></div>
+          Memuat data…
+        </td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  <div class="pagination-wrap">
+    <div class="page-info" id="pageInfo"></div>
+    <div class="page-btns" id="pageBtns"></div>
+  </div>
+
+</div><!-- /wrapper -->
+
+<div id="toast"></div>
 
 <script>
-const API_URL = "https://script.google.com/macros/s/AKfycbyTk7hZEU_zp8vkZ8b51TbIzS82iGWVIFyRVOMN-oqeBLDFuIN2klAAO8HoChtK8UWsWg/exec";
+// ── CONFIGURATION ────────────────────────────────────────────
+// Ganti URL ini dengan Web App URL setelah deploy Google Apps Script Anda
+const GAS_URL = "https://script.google.com/macros/s/AKfycbyiOnkrh4kifshGDq9fkq_22EqLt-8a5LcLOrd_9hmvURuPXD6azfRMDgyHDiTnibNQew/exec";
 
-let dataGlobal = [];
-let dataFiltered = [];
-let currentPage = 1;
-const rowsPerPage = 100;
+// ── State ────────────────────────────────────────────────────
+let state = {
+  page    : 1,
+  pageSize: 20,
+  total   : 0,
+  q       : "",
+  namaPenilai: "",
+  pegawai : "",
+  npp     : "",
+  divisi  : ""
+};
 
+// ── Fetch Data ───────────────────────────────────────────────
+async function fetchData() {
+  showLoading();
+  const params = new URLSearchParams({
+    action   : "getData",
+    page     : state.page,
+    pageSize : state.pageSize,
+    q        : state.q,
+    namaPenilai: state.namaPenilai,
+    pegawai  : state.pegawai,
+    npp      : state.npp,
+    divisi   : state.divisi
+  });
 
-const loadingBox = document.getElementById("loadingBox");
+  try {
+    const res  = await fetch(`${GAS_URL}?${params}`);
+    const json = await res.json();
 
-loadingBox.style.display = "block"; // tampilkan loading
+    if (json.error) throw new Error(json.error);
 
-fetch(API_URL)
-.then(res => res.json())
-.then(data => {
-    dataGlobal = data;
-
-    renderTable();
-    renderPagination();
-
-    loadingBox.style.display = "none"; // sembunyikan loading
-})
-.catch(err => {
-    loadingBox.innerHTML = `
-        <p class="text-danger">Gagal memuat data 😢</p>
-    `;
-});
-
-function renderTable() {
-    const dataSource = dataFiltered.length ? dataFiltered : dataGlobal;
-
-    const start = (currentPage - 1) * rowsPerPage;
-    const end = start + rowsPerPage;
-
-    const data = dataSource.slice(start, end);
-
-    let html = "";
-
-    data.forEach(row => {
-        html += `
-        <tr>
-            <td>${row["Waktu_Input"] || '-'}</td>
-            <td>${row["Nama_Penilai"] || '-'}</td>
-            <td>${row["NPP_Penilai"] || '-'}</td>
-            <td>${row["Jabatan_Penilai"] || '-'}</td>
-            <td>${row["Pegawai_Dinilai"] || '-'}</td>
-            <td>${row["NPP"] || '-'}</td>
-            <td>${row["Divisi"] || '-'}</td>
-            <td>${row["Unit"] || '-'}</td>
-            <td>${row["Jabatan"] || '-'}</td>
-        </tr>`;
-    });
-
-    document.getElementById("tableBody").innerHTML = html;
+    state.total = json.total;
+    renderTable(json.data, json.total);
+    renderPagination(json.total, json.page, json.pageSize);
+    updateStats(json.total, json.data.length, json.page);
+  } catch (err) {
+    showError(err.message);
+  }
 }
 
+// ── Render Table ─────────────────────────────────────────────
+const COLS = [
+  "Tanggal Input","Nama Penilai","NPP Penilai","Jabatan Penilai",
+  "Pegawai Yang Dinilai","NPP","Divisi","Unit","Jabatan"
+];
 
-function renderPagination() {
-    const dataSource = dataFiltered.length ? dataFiltered : dataGlobal;
+function renderTable(rows, total) {
+  const tbody = document.getElementById("tableBody");
 
-    const totalPages = Math.ceil(dataSource.length / rowsPerPage);
+  if (!rows || rows.length === 0) {
+    tbody.innerHTML = `<tr class="state-row"><td colspan="10">
+      <svg width="48" height="48" fill="none" stroke="var(--muted)" stroke-width="1.5" viewBox="0 0 24 24" style="margin:0 auto 12px;display:block"><path d="M9.172 14.828L12 12m0 0l2.828-2.828M12 12L9.172 9.172M12 12l2.828 2.828M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/></svg>
+      Tidak ada data yang ditemukan.
+    </td></tr>`;
+    return;
+  }
 
-    let html = "";
+  const offset = (state.page - 1) * state.pageSize;
+  tbody.innerHTML = rows.map((row, i) => `
+    <tr>
+      <td>${offset + i + 1}</td>
+      <td class="mono">${esc(formatTanggal(row["Tanggal Input"]))}</td>
+      <td><strong>${esc(row["Nama Penilai"])}</strong></td>
+      <td class="mono">${esc(row["NPP Penilai"])}</td>
+      <td><span class="badge-jabatan">${esc(row["Jabatan Penilai"])}</span></td>
+      <td>${esc(row["Pegawai Yang Dinilai"])}</td>
+      <td class="mono">${esc(row["NPP"])}</td>
+      <td><span class="badge-divisi">${esc(row["Divisi"])}</span></td>
+      <td>${esc(row["Unit"])}</td>
+      <td><span class="badge-jabatan">${esc(row["Jabatan"])}</span></td>
+    </tr>
+  `).join("");
 
-    for (let i = 1; i <= totalPages; i++) {
-        html += `
-        <li class="page-item ${i === currentPage ? 'active' : ''}">
-            <a class="page-link" href="#" onclick="changePage(${i})">${i}</a>
-        </li>`;
+  // Range info
+  const start = offset + 1;
+  const end   = offset + rows.length;
+  document.getElementById("rangeInfo").textContent =
+    `Menampilkan ${start}–${end} dari ${total} data`;
+}
+
+// ── Pagination ───────────────────────────────────────────────
+function renderPagination(total, page, pageSize) {
+  const totalPages = Math.ceil(total / pageSize);
+  const pi = document.getElementById("pageInfo");
+  const pb = document.getElementById("pageBtns");
+
+  pi.textContent = `Halaman ${page} dari ${totalPages}`;
+
+  if (totalPages <= 1) { pb.innerHTML = ""; return; }
+
+  // Build page numbers with ellipsis
+  const pages = buildPageList(page, totalPages);
+  let html = `<button class="pg-btn" onclick="goPage(${page - 1})" ${page===1?"disabled":""}>‹</button>`;
+  pages.forEach(p => {
+    if (p === "…") {
+      html += `<span class="pg-ellipsis">…</span>`;
+    } else {
+      html += `<button class="pg-btn ${p===page?"active":""}" onclick="goPage(${p})">${p}</button>`;
     }
-
-    document.getElementById("pagination").innerHTML = html;
+  });
+  html += `<button class="pg-btn" onclick="goPage(${page + 1})" ${page===totalPages?"disabled":""}>›</button>`;
+  pb.innerHTML = html;
 }
 
-
-
-
-function changePage(page) {
-    currentPage = page;
-    renderTable();
-    renderPagination();
+function buildPageList(current, total) {
+  if (total <= 7) return Array.from({length:total},(_,i)=>i+1);
+  const pages = new Set([1, total, current, current-1, current+1].filter(p=>p>=1&&p<=total));
+  const sorted = [...pages].sort((a,b)=>a-b);
+  const result = [];
+  sorted.forEach((p,i) => {
+    if (i > 0 && p - sorted[i-1] > 1) result.push("…");
+    result.push(p);
+  });
+  return result;
 }
 
-document.getElementById("searchInput").addEventListener("keyup", function(){
-    const keyword = this.value.toLowerCase();
+function goPage(p) {
+  const totalPages = Math.ceil(state.total / state.pageSize);
+  if (p < 1 || p > totalPages) return;
+  state.page = p;
+  fetchData();
+  window.scrollTo({top:0,behavior:"smooth"});
+}
 
-    dataFiltered = dataGlobal.filter(row =>
-        (row.Nama_Penilai && row.Nama_Penilai.toLowerCase().includes(keyword)) ||
-        (row.Pegawai_Dinilai && row.Pegawai_Dinilai.toLowerCase().includes(keyword)) ||
-        (row.Divisi && row.Divisi.toLowerCase().includes(keyword))
-    );
+// ── Stats ────────────────────────────────────────────────────
+function updateStats(total, shown, page) {
+  document.getElementById("statTotal").textContent = total.toLocaleString("id-ID");
+  document.getElementById("statShown").textContent = shown.toLocaleString("id-ID");
+  document.getElementById("statPage" ).textContent = page;
+}
 
-    currentPage = 1;
-    renderTable();
-    renderPagination();
+// ── Search / Reset ───────────────────────────────────────────
+function search() {
+  state.q           = document.getElementById("q").value.trim();
+  state.namaPenilai = document.getElementById("namaPenilai").value.trim();
+  state.pegawai     = document.getElementById("pegawai").value.trim();
+  state.npp         = document.getElementById("npp").value.trim();
+  state.divisi      = document.getElementById("divisi").value.trim();
+  state.page        = 1;
+  fetchData();
+}
+
+function resetSearch() {
+  ["q","namaPenilai","pegawai","npp","divisi"].forEach(id => {
+    document.getElementById(id).value = "";
+    state[id] = "";
+  });
+  state.page = 1;
+  fetchData();
+}
+
+function changePageSize() {
+  state.pageSize = parseInt(document.getElementById("pageSizeSelect").value, 10);
+  state.page     = 1;
+  fetchData();
+}
+
+// ── UI helpers ───────────────────────────────────────────────
+function showLoading() {
+  document.getElementById("tableBody").innerHTML = `
+    <tr class="state-row"><td colspan="10">
+      <div class="spinner"></div>Memuat data…
+    </td></tr>`;
+}
+
+function showError(msg) {
+  document.getElementById("tableBody").innerHTML = `
+    <tr class="state-row"><td colspan="10" style="color:var(--danger)">
+      ⚠ Gagal memuat data: ${esc(msg)}<br>
+      <small style="color:var(--muted);margin-top:6px;display:block">
+        Pastikan GAS_URL sudah diisi dengan URL deploy yang benar.
+      </small>
+    </td></tr>`;
+  toast(msg, true);
+}
+
+function toast(msg, isErr=false) {
+  const el = document.getElementById("toast");
+  el.textContent = msg;
+  el.className = "show" + (isErr?" error":"");
+  setTimeout(()=>{ el.className=""; }, 3500);
+}
+
+function formatTanggal(val) {
+  if (!val) return "";
+  // Sudah diformat GAS (dd/MM/yyyy HH:mm) → kembalikan apa adanya
+  if (/^\d{2}\/\d{2}\/\d{4}/.test(val)) return val;
+  // Masih string Date mentah dari sheet
+  const d = new Date(val);
+  if (isNaN(d)) return val;
+  const dd  = String(d.getDate()).padStart(2,"0");
+  const mm  = String(d.getMonth()+1).padStart(2,"0");
+  const hh  = String(d.getHours()).padStart(2,"0");
+  const min = String(d.getMinutes()).padStart(2,"0");
+  return `${dd}/${mm}/${d.getFullYear()} ${hh}:${min}`;
+}
+
+function esc(str) {
+  if (str === undefined || str === null) return "";
+  return String(str)
+    .replace(/&/g,"&amp;").replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+}
+
+// ── Enter key on search inputs ───────────────────────────────
+document.querySelectorAll("input[type=text]").forEach(el => {
+  el.addEventListener("keydown", e => { if(e.key==="Enter") search(); });
 });
 
-
-
+// ── Init ─────────────────────────────────────────────────────
+fetchData();
 </script>
-
 </body>
 </html>
