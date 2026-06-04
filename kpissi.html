@@ -1,0 +1,2316 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Key Performance Indicator</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Exo+2:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+
+/* ================= CSS VARIABLES — BRIGHT DIGITAL ================= */
+:root {
+  --bg-page:      #eef4fb;
+  --bg-panel:     #f7faff;
+  --bg-card:      #ffffff;
+  --bg-card-alt:  #f0f6ff;
+  --accent-blue:  #0078d4;
+  --accent-cyan:  #00b4d8;
+  --accent-teal:  #00c9a7;
+  --accent-green: #00a86b;
+  --accent-amber: #f59e0b;
+  --accent-red:   #ef4444;
+  --accent-purple:#7c3aed;
+  --text-head:    #0a2540;
+  --text-main:    #1e3a5f;
+  --text-dim:     #5b7fa6;
+  --text-label:   #3b6ea0;
+  --border-soft:  rgba(0,120,212,0.15);
+  --border-mid:   rgba(0,120,212,0.28);
+  --shadow-card:  0 2px 16px rgba(0,80,180,0.08), 0 1px 4px rgba(0,0,0,0.04);
+  --shadow-hover: 0 8px 32px rgba(0,100,200,0.14), 0 2px 8px rgba(0,0,0,0.06);
+}
+
+/* ================= GLOBAL ================= */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  background: var(--bg-page);
+  background-image:
+    linear-gradient(rgba(0,120,212,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,120,212,0.04) 1px, transparent 1px);
+  background-size: 36px 36px;
+  color: var(--text-main);
+  font-family: 'Exo 2', sans-serif;
+  min-height: 100vh;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background:
+    radial-gradient(ellipse at 10% 0%, rgba(0,180,216,0.10) 0%, transparent 45%),
+    radial-gradient(ellipse at 90% 100%, rgba(0,200,167,0.08) 0%, transparent 45%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.container { position: relative; z-index: 1; }
+
+/* ================= PAGE HEADER ================= */
+h3.text-center {
+  font-family: 'Orbitron', monospace;
+  font-weight: 700;
+  font-size: 1.45rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--accent-blue);
+  padding: 28px 0 8px;
+  position: relative;
+}
+
+h3.text-center::after {
+  content: '';
+  display: block;
+  height: 3px;
+  width: 100px;
+  background: linear-gradient(90deg, transparent, var(--accent-cyan), var(--accent-teal), transparent);
+  margin: 10px auto 0;
+  border-radius: 2px;
+  animation: scanline 3s ease-in-out infinite;
+}
+
+@keyframes scanline {
+  0%, 100% { opacity: 0.6; width: 70px; }
+  50%       { opacity: 1;   width: 180px; }
+}
+
+/* ================= CARD BASE ================= */
+.card {
+  background: var(--bg-card) !important;
+  border: 1px solid var(--border-soft) !important;
+  border-radius: 14px !important;
+  box-shadow: var(--shadow-card) !important;
+  transition: border-color 0.25s, box-shadow 0.25s, transform 0.2s;
+  overflow: hidden;
+  animation: fadeSlideIn 0.35s ease both;
+}
+
+.card:hover {
+  border-color: var(--border-mid) !important;
+  box-shadow: var(--shadow-hover) !important;
+  transform: translateY(-2px);
+}
+
+/* ================= CARD HEADERS ================= */
+.card-header {
+  font-family: 'Orbitron', monospace !important;
+  font-weight: 600 !important;
+  font-size: 0.75rem !important;
+  letter-spacing: 2px !important;
+  text-transform: uppercase !important;
+  padding: 14px 20px !important;
+  border-bottom: 1px solid var(--border-soft) !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.card-header::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 4px;
+  border-radius: 0 2px 2px 0;
+}
+
+/* Header variants — bright, colorful */
+.card-header.bg-dark {
+  background: linear-gradient(135deg, #0a2540 0%, #0e3460 100%) !important;
+  color: #e0f0ff !important;
+}
+.card-header.bg-dark::before { background: var(--accent-cyan); }
+
+.card-header.bg-secondary {
+  background: linear-gradient(135deg, #1a3a60 0%, #1e4070 100%) !important;
+  color: #d0e8ff !important;
+}
+.card-header.bg-secondary::before { background: #60c0ff; }
+
+.card-header.bg-primary {
+  background: linear-gradient(135deg, #0052a3 0%, #006dd4 100%) !important;
+  color: #ffffff !important;
+}
+.card-header.bg-primary::before { background: #7dd4ff; }
+
+.card-header.bg-success {
+  background: linear-gradient(135deg, #006644 0%, #008a5a 100%) !important;
+  color: #ffffff !important;
+}
+.card-header.bg-success::before { background: #60ffcc; }
+
+.card-header.bg-warning {
+  background: linear-gradient(135deg, #b45309 0%, #d97706 100%) !important;
+  color: #ffffff !important;
+}
+.card-header.bg-warning::before { background: #fde68a; }
+
+.card-header.bg-info {
+  background: linear-gradient(135deg, #0077a8 0%, #0099cc !important) !important;
+  color: #ffffff !important;
+}
+.card-header.bg-info::before { background: #a0eaff; }
+
+/* ================= CARD BODY ================= */
+.card-body {
+  background: transparent !important;
+  padding: 20px !important;
+}
+
+/* ================= LABELS ================= */
+label {
+  color: var(--text-label) !important;
+  font-size: 0.75rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 1px !important;
+  text-transform: uppercase !important;
+  margin-bottom: 6px !important;
+  display: block;
+}
+
+/* ================= FORM CONTROLS ================= */
+.form-control, .form-select {
+  background: #f4f8ff !important;
+  border: 1.5px solid #c0d8f0 !important;
+  border-radius: 8px !important;
+  color: var(--text-head) !important;
+  font-family: 'Exo 2', sans-serif !important;
+  font-size: 0.92rem !important;
+  padding: 10px 14px !important;
+  transition: border-color 0.25s, box-shadow 0.25s !important;
+}
+
+.form-control:focus, .form-select:focus {
+  background: #ffffff !important;
+  border-color: var(--accent-blue) !important;
+  box-shadow: 0 0 0 3px rgba(0,120,212,0.12) !important;
+  outline: none !important;
+  color: var(--text-head) !important;
+}
+
+.form-control[readonly] {
+  background: linear-gradient(135deg, #e8f4ff, #f0faff) !important;
+  border-color: var(--accent-cyan) !important;
+  color: var(--accent-blue) !important;
+  font-weight: 700 !important;
+  font-size: 1rem !important;
+  text-align: center;
+}
+
+.form-select option {
+  background: #ffffff !important;
+  color: var(--text-head) !important;
+}
+
+/* ================= RANGE SLIDER ================= */
+.form-range {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 6px;
+  background: linear-gradient(90deg, #c0ddf8, #e0eeff) !important;
+  border-radius: 3px;
+  outline: none;
+  margin: 8px 0;
+}
+
+.form-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+  box-shadow: 0 2px 8px rgba(0,120,212,0.4), 0 0 0 3px rgba(0,120,212,0.15);
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.form-range::-webkit-slider-thumb:hover {
+  transform: scale(1.25);
+  box-shadow: 0 4px 14px rgba(0,120,212,0.5), 0 0 0 4px rgba(0,120,212,0.2);
+}
+
+.form-range::-moz-range-thumb {
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+  box-shadow: 0 2px 8px rgba(0,120,212,0.4);
+  border: none;
+  cursor: pointer;
+}
+
+/* ================= SLIDER VALUE BADGE ================= */
+.slider-value {
+  font-weight: 700 !important;
+  color: var(--accent-blue) !important;
+  font-family: 'Orbitron', monospace !important;
+  font-size: 1.1rem !important;
+  display: inline-block;
+  min-width: 40px;
+  background: linear-gradient(135deg, #dbeeff, #e8f5ff);
+  border: 1px solid #b0d4f4;
+  border-radius: 6px;
+  padding: 2px 10px;
+}
+
+/* ================= DESC BOX ================= */
+.desc-box {
+  font-size: 13.5px !important;
+  background: linear-gradient(135deg, #f0f7ff, #f7fbff) !important;
+  border: 1px solid #c8dff4 !important;
+  border-left: 4px solid var(--accent-blue) !important;
+  padding: 16px !important;
+  height: 100%;
+  border-radius: 10px;
+  color: var(--text-main) !important;
+}
+
+.desc-box b {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.82rem;
+  letter-spacing: 1px;
+  color: var(--accent-blue);
+}
+
+/* ================= ACCORDION ================= */
+.accordion-item {
+  background: #f8fbff !important;
+  border: 1px solid #d0e6f8 !important;
+  border-radius: 8px !important;
+  margin-bottom: 5px !important;
+  overflow: hidden;
+}
+
+.accordion-button {
+  background: #f0f7ff !important;
+  color: var(--text-main) !important;
+  font-family: 'Exo 2', sans-serif !important;
+  font-size: 0.88rem !important;
+  font-weight: 500 !important;
+  padding: 12px 16px !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.accordion-button:not(.collapsed) {
+  background: linear-gradient(135deg, #daeeff, #e8f5ff) !important;
+  color: var(--accent-blue) !important;
+  font-weight: 600 !important;
+  box-shadow: none !important;
+}
+
+.accordion-button::after {
+  filter: none !important;
+}
+
+.accordion-body {
+  background: #ffffff !important;
+  padding: 14px 16px !important;
+  border-top: 1px solid #d8edf8 !important;
+}
+
+/* ================= BUTTONS ================= */
+.btn {
+  font-family: 'Orbitron', monospace !important;
+  font-size: 0.68rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 1.5px !important;
+  text-transform: uppercase !important;
+  border-radius: 8px !important;
+  transition: all 0.22s ease !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn::after {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 0; height: 0;
+  background: rgba(255,255,255,0.3);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.4s, height 0.4s;
+}
+.btn:active::after { width: 200px; height: 200px; }
+
+.btn-primary {
+  background: linear-gradient(135deg, #0078d4, #0096e8) !important;
+  border: none !important;
+  color: #ffffff !important;
+  box-shadow: 0 3px 10px rgba(0,120,212,0.30) !important;
+}
+.btn-primary:hover {
+  background: linear-gradient(135deg, #006ac0, #0086d8) !important;
+  box-shadow: 0 6px 18px rgba(0,120,212,0.40) !important;
+  transform: translateY(-2px) !important;
+}
+
+.btn-success {
+  background: linear-gradient(135deg, #00a86b, #00c47e) !important;
+  border: none !important;
+  color: #ffffff !important;
+  box-shadow: 0 3px 10px rgba(0,168,107,0.28) !important;
+}
+.btn-success:hover {
+  background: linear-gradient(135deg, #009460, #00b070) !important;
+  box-shadow: 0 6px 18px rgba(0,168,107,0.38) !important;
+  transform: translateY(-2px) !important;
+}
+
+.btn-danger {
+  background: linear-gradient(135deg, #e02020, #f04040) !important;
+  border: none !important;
+  color: #ffffff !important;
+  box-shadow: 0 3px 10px rgba(220,0,0,0.22) !important;
+}
+.btn-danger:hover {
+  background: linear-gradient(135deg, #c81818, #de3030) !important;
+  box-shadow: 0 6px 18px rgba(220,0,0,0.32) !important;
+  transform: translateY(-2px) !important;
+}
+
+.btn-warning {
+  background: linear-gradient(135deg, #d97706, #f59e0b) !important;
+  border: none !important;
+  color: #ffffff !important;
+  box-shadow: 0 3px 10px rgba(217,119,6,0.28) !important;
+}
+.btn-warning:hover {
+  background: linear-gradient(135deg, #c26600, #e08e00) !important;
+  box-shadow: 0 6px 18px rgba(217,119,6,0.38) !important;
+  transform: translateY(-2px) !important;
+}
+
+.btn-secondary {
+  background: linear-gradient(135deg, #4a6fa5, #5a7fb8) !important;
+  border: none !important;
+  color: #ffffff !important;
+  box-shadow: 0 3px 10px rgba(74,111,165,0.22) !important;
+}
+.btn-secondary:hover {
+  background: linear-gradient(135deg, #3a5f95, #4a6fa8) !important;
+  box-shadow: 0 6px 18px rgba(74,111,165,0.32) !important;
+  transform: translateY(-2px) !important;
+}
+
+.btn-outline-dark {
+  border: 1.5px solid #1a3a60 !important;
+  color: #1a3a60 !important;
+  background: transparent !important;
+}
+.btn-outline-dark:hover {
+  background: #1a3a60 !important;
+  color: #fff !important;
+}
+
+/* ================= BADGES ================= */
+.badge {
+  font-family: 'Orbitron', monospace !important;
+  font-size: 0.58rem !important;
+  letter-spacing: 1px !important;
+}
+
+.badge.bg-success {
+  background: linear-gradient(135deg, #00a86b, #00c47e) !important;
+  color: #fff !important;
+}
+
+.badge.badge-solid {
+  background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan)) !important;
+  color: #fff !important;
+}
+
+.badge.bg-warning.text-dark {
+  background: linear-gradient(135deg, #d97706, #f59e0b) !important;
+  color: #fff !important;
+}
+
+/* ================= TABLES ================= */
+.table {
+  color: var(--text-main) !important;
+  border-color: #d4e8f8 !important;
+}
+
+.table th {
+  color: var(--text-label) !important;
+  font-size: 0.78rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 1px !important;
+  border-color: #d4e8f8 !important;
+  background: #edf5ff !important;
+  font-family: 'Exo 2', sans-serif;
+  font-weight: 600;
+}
+
+.table td {
+  border-color: #e0eef8 !important;
+  color: var(--text-head) !important;
+}
+
+/* ================= MODAL ================= */
+.modal-content {
+  background: #ffffff !important;
+  border: 1px solid #c8dff4 !important;
+  border-radius: 16px !important;
+  box-shadow: 0 20px 60px rgba(0,60,160,0.18), 0 4px 16px rgba(0,0,0,0.06) !important;
+  color: var(--text-main) !important;
+}
+
+.modal-header {
+  border-bottom: 1px solid #d8edf8 !important;
+  padding: 18px 24px !important;
+}
+
+.modal-body {
+  background: #f8fbff !important;
+}
+
+.modal-body[style*="background:#f4f6f9"] {
+  background: #f4f8ff !important;
+}
+
+.modal-footer {
+  border-top: 1px solid #d8edf8 !important;
+  background: #f8fbff !important;
+}
+
+/* Modal headers */
+.modal-header.bg-primary {
+  background: linear-gradient(135deg, #0052a3, #006dd4) !important;
+  color: #ffffff !important;
+}
+.modal-header.bg-success {
+  background: linear-gradient(135deg, #006644, #008a5a) !important;
+  color: #ffffff !important;
+}
+.modal-header.bg-warning.text-dark {
+  background: linear-gradient(135deg, #b45309, #d97706) !important;
+  color: #ffffff !important;
+}
+.modal-header[style*="background:#6f42c1"] {
+  background: linear-gradient(135deg, #5b2199, #7c3aed) !important;
+  color: #ffffff !important;
+}
+
+.modal-title {
+  font-family: 'Orbitron', monospace !important;
+  font-size: 0.82rem !important;
+  letter-spacing: 2px !important;
+  text-transform: uppercase !important;
+}
+
+.btn-close {
+  filter: none !important;
+  opacity: 0.8 !important;
+}
+
+.btn-close-white {
+  filter: invert(1) !important;
+  opacity: 0.9 !important;
+}
+
+/* ================= MODAL KPI CARDS ================= */
+.card-solid {
+  background: #ffffff !important;
+  border: 1px solid #c8dff4 !important;
+  border-left: 4px solid var(--accent-blue) !important;
+  border-radius: 10px !important;
+  box-shadow: 0 2px 10px rgba(0,80,180,0.07) !important;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card-solid:hover {
+  transform: translateY(-3px) !important;
+  box-shadow: 0 8px 24px rgba(0,80,180,0.14) !important;
+}
+
+.card-solid[style*="border-left-color:#198754"] {
+  border-left-color: var(--accent-green) !important;
+}
+.card-solid[style*="border-left-color:#ffc107"] {
+  border-left-color: var(--accent-amber) !important;
+}
+.card-solid[style*="border-left-color:#6f42c1"] {
+  border-left-color: var(--accent-purple) !important;
+}
+
+.card-solid .card-body h5 {
+  font-family: 'Exo 2', sans-serif !important;
+  font-weight: 600 !important;
+  font-size: 1rem !important;
+  color: var(--text-head) !important;
+  margin-bottom: 0 !important;
+}
+
+.icon-solid {
+  font-size: 1.6rem;
+  color: var(--accent-blue);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.card-solid p  { color: var(--text-main) !important; font-size: 0.9rem !important; }
+.card-solid ul { color: var(--text-dim)  !important; font-size: 0.85rem !important; padding-left: 1.2rem; }
+.card-solid ul li { margin-bottom: 3px; }
+
+/* ================= ALERT & SCORE BOX ================= */
+.alert.alert-primary {
+  background: linear-gradient(135deg, #dbeeff, #e8f5ff) !important;
+  border: 1.5px solid #90c8f0 !important;
+  color: var(--text-main) !important;
+  border-radius: 12px !important;
+}
+
+.total-box {
+  font-family: 'Orbitron', monospace !important;
+  font-size: 2.8rem !important;
+  font-weight: 900 !important;
+  color: var(--accent-blue) !important;
+  letter-spacing: 4px !important;
+  text-shadow: 0 2px 8px rgba(0,120,212,0.2) !important;
+}
+
+/* ================= PRINT AREA ================= */
+#printArea .card-header.bg-secondary {
+  background: linear-gradient(135deg, #1a3a60, #1e4070) !important;
+}
+
+#printArea h5 {
+  color: var(--accent-blue) !important;
+  font-family: 'Orbitron', monospace !important;
+  font-size: 0.88rem !important;
+  letter-spacing: 1px !important;
+}
+
+.badge.bg-success.fs-5 {
+  background: linear-gradient(135deg, #00a86b, #00c47e) !important;
+  color: #ffffff !important;
+  font-family: 'Orbitron', monospace !important;
+  font-size: 1.4rem !important;
+  padding: 8px 20px !important;
+  letter-spacing: 3px !important;
+  border-radius: 8px !important;
+}
+
+/* ================= KRITERIA BOX ================= */
+.kriteria-box {
+  background: #f0f7ff !important;
+  border: 1px solid #cce0f4 !important;
+  border-radius: 7px !important;
+  padding: 9px 13px !important;
+  margin-bottom: 6px !important;
+  color: var(--text-main) !important;
+  font-size: 0.85rem !important;
+}
+
+/* ================= SECTION TEXTS ================= */
+p, ul li { color: var(--text-main); }
+.text-muted  { color: var(--text-dim) !important; }
+.fw-bold, .fw-semibold { color: var(--text-head) !important; }
+
+h6.fw-bold.text-success { color: var(--accent-green) !important; font-size: 0.88rem !important; }
+h6.fw-bold.text-primary { color: var(--accent-blue)  !important; font-size: 0.88rem !important; }
+
+/* ================= HR ================= */
+hr {
+  border-color: #d0e8f8 !important;
+  margin: 16px 0 !important;
+}
+
+/* ================= SCROLLBAR ================= */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #eef4fb; }
+::-webkit-scrollbar-thumb { background: rgba(0,120,212,0.25); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(0,120,212,0.5); }
+
+/* ================= ANIMATIONS ================= */
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ================= MOBILE RESPONSIVE ================= */
+@media (max-width: 576px) {
+  .row > [class*="col-md-"] {
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
+  }
+  .row { row-gap: 12px; }
+  .desc-box { margin-bottom: 8px; height: auto !important; }
+}
+
+/* ================= PRINT FINAL (FIXED) ================= */
+@media print {
+  @page { size: A4 portrait; margin: 10mm; }
+
+  body {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #fff !important;
+    color: #000 !important;
+  }
+
+  .no-print { display: none !important; }
+
+  #printArea {
+    display: block !important;
+    visibility: visible !important;
+  }
+
+  h1, h2, h3, h4, h5 { margin-top: 0 !important; color: #000 !important; }
+
+  .card, .card-header, .card-body {
+    background: #fff !important;
+    color: #000 !important;
+    border: 1px solid #ccc !important;
+    box-shadow: none !important;
+  }
+
+  table { width: 100%; border-collapse: collapse; }
+  table th, table td {
+    border: 1px solid #000;
+    padding: 6px;
+    font-size: 11pt;
+    color: #000 !important;
+    background: #fff !important;
+  }
+  table, tr { page-break-inside: avoid; }
+
+  .badge.bg-success.fs-5 {
+    background: #e8f5e9 !important;
+    color: #000 !important;
+    border: 1px solid #2e7d32 !important;
+    text-shadow: none !important;
+  }
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container my-4 no-print">
+
+<h3 class="text-center mb-4">
+<i class="fas fa-chart-line"></i> Key Performance Indicator Pegawai PT SSI
+</h3>
+
+<!-- ================= DATA PENILAI ================= -->
+<div class="card mb-4">
+<div class="card-header bg-dark text-white">
+<i class="fas fa-user"></i> Data Penilai ( Atasan ) 
+</div>
+<div class="card-body">
+<div class="row">
+
+<div class="col-md-5 mb-3">
+<label>Nama Penilai </label>
+<input type="text" id="nama_penilai" class="form-control">
+</div>
+
+<div class="col-md-3 mb-3">
+<label>NPP</label>
+<input type="text" id="npp_penilai" class="form-control">
+</div>
+
+
+<div class="col-md-4 mb-3">
+<label>Jabatan</label>
+<select id="jabatan_penilai" class="form-select">
+<option value="">-- Pilih Jabatan --</option>
+<option>GM</option><option>CEO Region</option><option>Deputy</option>
+<option>Senior Manager</option><option>Manager</option>
+<option>Asmen</option>
+</select>
+</div>
+
+</div>
+</div>
+</div>
+
+<!-- ================= DATA PEGAWAI YANG DINILAI ================= -->
+<div class="card mb-4">
+<div class="card-header bg-secondary text-white">
+<i class="fas fa-user"></i> Data Pegawai ( yang dinilai )
+</div>
+<div class="card-body">
+<div class="row">
+
+<div class="col-md-6 mb-3">
+<label>Nama Pegawai</label>
+<input type="text" id="nama" class="form-control">
+</div>
+
+<div class="col-md-6 mb-3">
+<label>NPP</label>
+<input type="text" id="npp" class="form-control">
+</div>
+
+<div class="col-md-4 mb-3">
+<label>Divisi</label>
+<select id="divisi" class="form-select">
+<option value="">-- Pilih Divisi --</option>
+<option>INA</option><option>HCC</option><option>PLM</option>
+<option>OPR1</option><option>OPR2</option><option>OPS</option>
+<option>FRM</option><option>MBS</option><option>SBD</option><option>CSI</option>
+</select>
+</div>
+
+<div class="col-md-4 mb-3">
+<label>Unit</label>
+<input type="text" id="unit" class="form-control">
+</div>
+
+<div class="col-md-4 mb-3">
+<label>Jabatan</label>
+<select id="jabatan" class="form-select">
+<option value="">-- Pilih Jabatan --</option>
+<option>GM</option><option>CEO Region</option><option>Deputy</option>
+<option>Senior Manager</option><option>Manager</option>
+<option>Asmen</option><option>Staf</option>
+</select>
+</div>
+
+</div>
+</div>
+</div>
+
+
+<!-- ================= NILAI PERSONALITY (SIAP) ================= -->
+<div class="card mb-4">
+  <div class="card-header bg-primary text-white">
+    <i class="fas fa-brain"></i> Nilai Culture (SIAP) 
+  </div>
+
+  <div class="card-body">
+
+    <!-- ================= ROW 1 : SOLID & INTEGRITAS ================= -->
+    <div class="row">
+
+      <!-- ================= SOLID ================= -->
+      <div class="col-md-6 mb-4">
+        <div class="desc-box">
+          <b>Solid</b><br>
+          Budaya kerja yang menekankan kebersamaan, kekompakan,
+          dan saling mendukung untuk tujuan bersama.
+          <br>
+          <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modalSolid">
+            <i class="bi bi-people-fill me-1"></i> Lihat KPI Budaya SOLID
+          </button>
+
+
+          <div class="accordion mt-3" id="accordionSolid">
+
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#teamwork">
+                  Team Work
+                </button>
+              </h2>
+              <div id="teamwork" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                  <input type="number" id="solidTeam" class="form-control mb-2" min="0" max="100">
+                  <input type="range" id="solidTeamRange" class="form-range" min="0" max="100">
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#kolaboratif">
+                  Kolaboratif
+                </button>
+              </h2>
+              <div id="kolaboratif" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                  <input type="number" id="solidKolab" class="form-control mb-2" min="0" max="100">
+                  <input type="range" id="solidKolabRange" class="form-range" min="0" max="100">
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#harmony">
+                  Harmony
+                </button>
+              </h2>
+              <div id="harmony" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                  <input type="number" id="solidHarmony" class="form-control mb-2" min="0" max="100">
+                  <input type="range" id="solidHarmonyRange" class="form-range" min="0" max="100">
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#respect">
+                  Respect
+                </button>
+              </h2>
+              <div id="respect" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                  <input type="number" id="solidRespect" class="form-control mb-2" min="0" max="100">
+                  <input type="range" id="solidRespectRange" class="form-range" min="0" max="100">
+                </div>
+              </div>
+            </div>
+
+         </div>
+              <label class="mt-3">Nilai Solid (Rata-rata)</label>
+              <input type="number" id="solid" class="form-control mb-2" readonly>
+              <span class="slider-value" id="vSolid"></span>
+        </div>
+    </div>
+
+      <!-- ================= INTEGRITAS ================= -->
+      <div class="col-md-6 mb-4">
+        <div class="desc-box">
+              <b>Integritas</b><br>
+              Konsistensi antara perkataan, tindakan, dan nilai moral
+              yang menjunjung kejujuran dan tanggung jawab.
+              <br>
+              <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modalIntegrity">
+                <i class="bi bi-shield-lock-fill me-1"></i> Lihat KPI Budaya INTEGRITY
+              </button>
+
+
+          <div class="accordion mt-3" id="accordionIntegrity">
+
+                <div class="accordion-item">
+                  <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#honesty">
+                      Honesty
+                    </button>
+                  </h2>
+                  <div id="honesty" class="accordion-collapse collapse">
+                    <div class="accordion-body">
+                      <input type="number" id="intHonesty" class="form-control mb-2">
+                      <input type="range" id="intHonestyRange" class="form-range">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="accordion-item">
+                  <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#compliance">
+                      Compliance
+                    </button>
+                  </h2>
+                  <div id="compliance" class="accordion-collapse collapse">
+                    <div class="accordion-body">
+                      <input type="number" id="intCompliance" class="form-control mb-2">
+                      <input type="range" id="intComplianceRange" class="form-range">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="accordion-item">
+                  <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accountability">
+                      Accountability
+                    </button>
+                  </h2>
+                  <div id="accountability" class="accordion-collapse collapse">
+                    <div class="accordion-body">
+                      <input type="number" id="intAccount" class="form-control mb-2">
+                      <input type="range" id="intAccountRange" class="form-range">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="accordion-item">
+                  <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#etika">
+                      Etika Profesional
+                    </button>
+                  </h2>
+                  <div id="etika" class="accordion-collapse collapse">
+                    <div class="accordion-body">
+                      <input type="number" id="intEtika" class="form-control mb-2">
+                      <input type="range" id="intEtikaRange" class="form-range">
+                    </div>
+                  </div>
+                </div>
+
+           </div>
+              <label class="mt-3">Nilai Integritas (Rata-rata)</label>
+              <input type="number" id="integrity" class="form-control mb-2" readonly>
+              <span class="slider-value" id="vIntegrity"></span>
+           
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= ROW 2 : ADAPTIF & PROFESIONAL ================= -->
+    <div class="row">
+
+      <!-- ================= ADAPTIF ================= -->
+        <div class="col-md-6 mb-4">
+            <div class="desc-box">
+                  <b>Adaptif</b><br>
+                  Kemampuan menyesuaikan diri secara cepat dan tepat
+                  terhadap perubahan sistem, teknologi, dan kebijakan.
+                  <br>
+                  <button class="btn btn-primary btn-sm text-white" data-bs-toggle="modal" data-bs-target="#modalAdaptive">
+                   <i class="bi bi-arrow-repeat me-1"></i> Lihat KPI Budaya ADAPTIVE
+                  </button>
+
+
+                <div class="accordion mt-3" id="accordionAdaptif">
+                <!-- FLEXIBILITY -->
+                    <div class="accordion-item">
+                      <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#flexibility">
+                          Flexibility
+                        </button>
+                      </h2>
+                      <div id="flexibility" class="accordion-collapse collapse">
+                        <div class="accordion-body">
+                          <input type="number" id="adFlex" class="form-control mb-2" min="0" max="100">
+                          <input type="range" id="adFlexRange" class="form-range" min="0" max="100">
+                        </div>
+                      </div>
+                    </div>
+
+                <!-- AGILE -->
+                    <div class="accordion-item">
+                      <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#agile">
+                          Agile
+                        </button>
+                      </h2>
+                      <div id="agile" class="accordion-collapse collapse">
+                        <div class="accordion-body">
+                          <input type="number" id="adAgile" class="form-control mb-2" min="0" max="100">
+                          <input type="range" id="adAgileRange" class="form-range" min="0" max="100">
+                        </div>
+                      </div>
+                    </div>
+
+            <!-- ENDURANCE -->
+                    <div class="accordion-item">
+                      <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#endurance">
+                          Endurance
+                        </button>
+                      </h2>
+                      <div id="endurance" class="accordion-collapse collapse">
+                        <div class="accordion-body">
+                          <input type="number" id="adEndurance" class="form-control mb-2" min="0" max="100">
+                          <input type="range" id="adEnduranceRange" class="form-range" min="0" max="100">
+                        </div>
+                      </div>
+                    </div>
+
+            <!-- PROBLEM SOLVING -->
+                    <div class="accordion-item">
+                      <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#problemSolving">
+                          Problem Solving
+                        </button>
+                      </h2>
+                      <div id="problemSolving" class="accordion-collapse collapse">
+                        <div class="accordion-body">
+                          <input type="number" id="adProblem" class="form-control mb-2" min="0" max="100">
+                          <input type="range" id="adProblemRange" class="form-range" min="0" max="100">
+                        </div>
+                      </div>
+                    </div>
+                </div>
+  
+        <!-- NILAI HASIL ADAPTIF -->
+    
+          <label class="mt-3">Nilai Adaptif (Rata-rata)</label>
+          <input type="number" id="adaptif" class="form-control mb-2" readonly>
+          <span class="slider-value" id="vAdaptif"></span>
+        </div>
+      </div>
+  
+
+
+      <!-- ================= PROFESIONAL ================= -->   
+      <div class="col-md-6 mb-4">
+        <div class="desc-box">
+              <b>Profesional</b><br>
+              Menunjukkan kompetensi, kualitas kerja tinggi,
+              komunikasi efektif, dan kedisiplinan.
+              <br>
+              <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modalProfessionalism">
+                <i class="bi bi-briefcase-fill me-1"></i> Lihat KPI Budaya PROFESSIONALISM
+              </button>
+
+          <div class="accordion mt-3" id="accordionProfesional">
+            
+            <!-- COMPETENCY -->
+                <div class="accordion-item">
+                  <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#competency">
+                      Competency
+                    </button>
+                  </h2>
+                  <div id="competency" class="accordion-collapse collapse">
+                    <div class="accordion-body">
+                      <input type="number" id="proCompetency" class="form-control mb-2" min="0" max="100">
+                      <input type="range" id="proCompetencyRange" class="form-range" min="0" max="100">
+                    </div>
+                  </div>
+                </div>
+
+        <!-- QUALITY -->
+                <div class="accordion-item">
+                  <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#quality">
+                      Quality
+                    </button>
+                  </h2>
+                  <div id="quality" class="accordion-collapse collapse">
+                    <div class="accordion-body">
+                      <input type="number" id="proQuality" class="form-control mb-2" min="0" max="100">
+                      <input type="range" id="proQualityRange" class="form-range" min="0" max="100">
+                    </div>
+                  </div>
+                </div>
+
+        <!-- COMMUNICATION -->
+                <div class="accordion-item">
+                  <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#communication">
+                      Communication
+                    </button>
+                  </h2>
+                  <div id="communication" class="accordion-collapse collapse">
+                    <div class="accordion-body">
+                      <input type="number" id="proCommunication" class="form-control mb-2" min="0" max="100">
+                      <input type="range" id="proCommunicationRange" class="form-range" min="0" max="100">
+                    </div>
+                  </div>
+                </div>
+
+        <!-- WORK DISCIPLINE -->
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#workDiscipline">
+                  Work Discipline
+                </button>
+              </h2>
+              <div id="workDiscipline" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                  <input type="number" id="proDiscipline" class="form-control mb-2" min="0" max="100">
+                  <input type="range" id="proDisciplineRange" class="form-range" min="0" max="100">
+                </div>
+              </div>
+            </div>
+        </div>
+
+  <!-- NILAI HASIL PROFESIONAL -->
+          
+              <label class="mt-3">Nilai Profesional (Rata-rata)</label>
+              <input type="number" id="profesional" class="form-control mb-2" readonly>
+              <span class="slider-value" id="vProfesional"></span>
+         </div>
+      </div>
+    </div>
+
+
+<!-- ================= KPI TARGET KERJA ================= -->
+<div class="card mb-4">
+    <div class="card-header bg-success text-white">
+        <i class="bi bi-clipboard-check"></i> KPI Target Kerja 
+    </div>
+    <div class="card-body">
+
+        <div class="row">
+
+            <!-- ================= KOLOM KIRI : PENJELASAN ================= -->
+            <div class="col-md-12 mb-3">
+                <div class="desc-box h-100">
+
+                    <!-- A. KPI HEAD QUATER-->
+                    <h6 class="fw-bold text-success">
+                        <i class="bi bi-bullseye"></i> A. KPI HEAD QUARTER ( SSI PUSAT )
+                    </h6>
+                    <p class="small text-muted">
+                        Mengukur output atau hasil utama dari pekerjaan pegawai Head Quarter.
+                        <br>
+                        Sesuaikan dengan OKR per Divisi Masing masing 
+                    </p>
+                    
+
+                    <hr>
+
+                    <!-- B. KPI UNTUK SENTRA OPERASI -->
+                    <h6 class="fw-bold text-primary">
+                        <i class="bi bi-gear-fill"></i> B. KPI SENTRA OPERASI / COU TWU
+                    </h6>
+                    <p class="small text-muted">
+                        Mengukur KPI untuk Sentra Operasi berdasarkan .                     
+                    </p>
+                    <ul class="small">
+                        <li>SLA Sentra Operasi </li>
+                        <li>Compliance Sentra Operasi </li>
+                        
+                    </ul>
+
+                </div>
+            </div>
+   
+        </div>
+
+    </div>
+</div>
+
+
+<!-- ================= ABSENSI & WORKLOAD ================= -->
+<div class="row mb-4">
+
+<div class="col-md-12">
+  <div class="card">
+    <div class="card-header bg-warning">
+       
+    <i class="bi bi-calendar-check"></i> IT Adoption 
+    </div>
+    <div class="card-body">
+        <ul>
+          <li>Aplikasi HRIS untuk Absensi </li>
+          <li>Aplikasi Savina untuk team FLM</li>
+          <li>Apliksi SOA Mobile untuk Team Custody</li>
+          <li>Aplikasi SSINet untuk tim SLM </li>
+      </ul>
+    
+    </div>
+  </div>
+</div>
+
+
+  
+
+
+</div>
+
+</div>
+
+<div class="row g-2 mb-4">
+
+  <div class="col-md-4 col-12">
+    <button class="btn btn-success w-100" onclick="saveData()">
+      <i class="fas fa-save me-1"></i> Simpan KPI
+    </button>
+  </div>
+
+  <div class="col-md-4 col-12">
+    <button class="btn btn-danger w-100" onclick="printPDF()">
+      <i class="bi bi-printer-fill me-1"></i> Cetak PDF
+    </button>
+  </div>
+
+  <div class="col-md-4 col-12">
+    <button class="btn btn-primary w-100" onclick="resetForm()">
+      <i class="bi bi-arrow-clockwise me-1"></i> Refresh
+    </button>
+  </div>
+
+  <div class="col-md-6 col-12">
+    <a href="database.html" class="btn btn-warning w-100">
+      <i class="bi bi-database me-1"></i> Lihat Database
+    </a>
+ </div>
+  <div class="col-md-6 col-12">
+    <a href="dashboard.html" class="btn btn-secondary w-100">
+      <i class="bi bi-database me-1"></i> Lihat Dashboard
+    </a>
+ </div>
+
+</div>
+</div>
+</div>
+</div>
+
+
+
+<hr class="my-4">
+
+<div id="printArea" class="card d-none">
+  <div class="card-header bg-secondary text-white">
+    <i class="bi bi-file-earmark-text"></i> Ringkasan KPI Pegawai
+  </div>
+  <div class="card-body">
+
+
+      <h5 class="mb-3">👤 Data Penilai</h5>
+      <table class="table table-sm">
+        <tr><th>Nama Penilai</th><td id="pNamaPenilai"></td></tr>
+        <tr><th>NPP</th><td id="pNppPenilai"></td></tr>
+        <tr><th>Jabatan</th><td id="pJabatanPenilai"></td></tr>
+      </table>
+
+      <h5 class="mt-4">📌 Biodata Pegawai</h5>
+      <table class="table table-sm">
+        <tr><th>Nama</th><td id="pNama"></td></tr>
+        <tr><th>NPP</th><td id="pNpp"></td></tr>
+        <tr><th>Divisi</th><td id="pDivisi"></td></tr>
+        <tr><th>Unit</th><td id="pUnit"></td></tr>
+        <tr><th>Jabatan</th><td id="pJabatan"></td></tr>
+      </table>
+
+
+    <h5 class="mt-4">📊 Nilai KPI</h5>
+    <table class="table table-bordered">
+      <tr><th>Solid</th><td id="pSolid"></td></tr>
+      <tr><th>Integritas</th><td id="pIntegritas"></td></tr>
+      <tr><th>Adaptif</th><td id="pAdaptif"></td></tr>
+      <tr><th>Profesional</th><td id="pProfesional"></td></tr>
+      <tr><th>Target Kerja Utama</th><td id="pTargetUtama"></td></tr>
+      <tr><th>Target Proses Kerja</th><td id="pTargetProses"></td></tr>
+      <tr><th>Absensi</th><td id="pAbsensi"></td></tr>
+      <tr><th>Workload</th><td id="pWorkload"></td></tr>
+    </table>
+
+    <h4 class="text-center mt-4">
+      🎯 NILAI TOTAL KPI :
+      <span class="badge bg-success fs-5" id="pTotal"></span>
+    </h4>
+
+  </div>
+</div>
+
+
+
+</div>
+<!-- ================= MODAL SOLID================= -->
+
+<!-- MODAL KPI SOLID -->
+<div class="modal fade" id="modalSolid" tabindex="-1" aria-labelledby="modalSolidLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+
+      <!-- MODAL HEADER -->
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title" id="modalSolidLabel">
+          <i class="bi bi-people-fill me-2"></i> KPI Budaya SOLID – Team & Kolaborasi
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- MODAL BODY -->
+      <div class="modal-body" style="background:#f4f6f9;">
+
+        <div class="container-fluid">
+          <div class="row g-4">
+
+            <!-- 1. TEAMWORK -->
+            <div class="col-md-6">
+              <div class="card card-solid h-100">
+                <div class="card-body">
+                  <div class="d-flex mb-3">
+                    <div class="icon-solid me-3"><i class="bi bi-people-fill"></i></div>
+                    <h5>1️⃣ Teamwork</h5>
+                  </div>
+                  <span class="badge badge-solid mb-2">Makna</span>
+                  <p>Kemampuan bekerja sebagai satu tim untuk mencapai target bersama.</p>
+                  <span class="badge bg-success mb-2">Indikator Perilaku</span>
+                  <ul>
+                    <li>Saling membantu antar anggota tim</li>
+                    <li>Tidak bekerja sendiri / ego sektoral</li>
+                    <li>Mengutamakan kepentingan tim</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- 2. COLLABORATION -->
+            <div class="col-md-6">
+              <div class="card card-solid h-100">
+                <div class="card-body">
+                  <div class="d-flex mb-3">
+                    <div class="icon-solid me-3"><i class="bi bi-diagram-3-fill"></i></div>
+                    <h5>2️⃣ Collaboration</h5>
+                  </div>
+                  <span class="badge badge-solid mb-2">Makna</span>
+                  <p>Kemampuan berkolaborasi lintas fungsi dan divisi.</p>
+                  <span class="badge bg-success mb-2">Indikator Perilaku</span>
+                  <ul>
+                    <li>Terbuka terhadap ide orang lain</li>
+                    <li>Komunikasi dua arah yang sehat</li>
+                    <li>Aktif bekerja lintas unit</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- 3. SUPPORTIVENESS -->
+            <div class="col-md-6">
+              <div class="card card-solid h-100">
+                <div class="card-body">
+                  <div class="d-flex mb-3">
+                    <div class="icon-solid me-3"><i class="bi bi-heart-fill"></i></div>
+                    <h5>3️⃣ Supportiveness</h5>
+                  </div>
+                  <span class="badge badge-solid mb-2">Makna</span>
+                  <p>Sikap saling mendukung dan membangun lingkungan kerja yang positif.</p>
+                  <span class="badge bg-success mb-2">Indikator Perilaku</span>
+                  <ul>
+                    <li>Memberi dukungan saat rekan mengalami kendala</li>
+                    <li>Tidak menjatuhkan rekan kerja</li>
+                    <li>Mau berbagi pengetahuan dan pengalaman</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- 4. RESPECT & HARMONY -->
+            <div class="col-md-6">
+              <div class="card card-solid h-100">
+                <div class="card-body">
+                  <div class="d-flex mb-3">
+                    <div class="icon-solid me-3"><i class="bi bi-shield-check"></i></div>
+                    <h5>4️⃣ Respect & Harmony</h5>
+                  </div>
+                  <span class="badge badge-solid mb-2">Makna</span>
+                  <p>Sikap saling menghargai untuk menjaga keharmonisan dalam tim.</p>
+                  <span class="badge bg-success mb-2">Indikator Perilaku</span>
+                  <ul>
+                    <li>Menghargai perbedaan pendapat</li>
+                    <li>Menjaga etika komunikasi</li>
+                    <li>Tidak memicu konflik internal</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <!-- MODAL FOOTER -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          <i class="bi bi-x-circle"></i> Tutup
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ================= MODAL INTEGRITY  ================= -->
+
+<!-- MODAL KPI INTEGRITY -->
+<div class="modal fade" id="modalIntegrity" tabindex="-1" aria-labelledby="modalIntegrityLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+
+      <!-- MODAL HEADER -->
+      <div class="modal-header bg-success text-white">
+        <h5 class="modal-title" id="modalIntegrityLabel">
+          <i class="bi bi-shield-lock-fill me-2"></i> KPI Budaya INTEGRITY
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- MODAL BODY -->
+      <div class="modal-body" style="background:#f4f6f9;">
+
+        <div class="container-fluid">
+          <div class="row g-4">
+
+            <!-- 1. KEJUJURAN -->
+            <div class="col-md-6">
+              <div class="card card-solid h-100" style="border-left-color:#198754;">
+                <div class="card-body">
+                  <div class="d-flex mb-3">
+                    <div class="icon-solid me-3 text-success">
+                      <i class="bi bi-check-circle-fill"></i>
+                    </div>
+                    <h5>1️⃣ Kejujuran (Honesty)</h5>
+                  </div>
+
+                  <span class="badge bg-success mb-2">Makna</span>
+                  <p>Konsisten menyampaikan informasi apa adanya, tidak memanipulasi data atau laporan.</p>
+
+                  <span class="badge bg-success mb-2">Indikator Perilaku</span>
+                  <ul>
+                    <li>Laporan kerja sesuai fakta</li>
+                    <li>Tidak menutup-nutupi kesalahan</li>
+                    <li>Transparan dalam komunikasi</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- 2. COMPLIANCE -->
+            <div class="col-md-6">
+              <div class="card card-solid h-100" style="border-left-color:#198754;">
+                <div class="card-body">
+                  <div class="d-flex mb-3">
+                    <div class="icon-solid me-3 text-success">
+                      <i class="bi bi-clipboard-check-fill"></i>
+                    </div>
+                    <h5>2️⃣ Kepatuhan terhadap Aturan (Compliance)</h5>
+                  </div>
+
+                  <span class="badge bg-success mb-2">Makna</span>
+                  <p>Mematuhi kebijakan, SOP, dan peraturan perusahaan.</p>
+
+                  <span class="badge bg-success mb-2">Indikator Perilaku</span>
+                  <ul>
+                    <li>Bekerja sesuai SOP</li>
+                    <li>Tidak melanggar kebijakan perusahaan</li>
+                    <li>Menjaga disiplin kerja</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- 3. ACCOUNTABILITY -->
+            <div class="col-md-6">
+              <div class="card card-solid h-100" style="border-left-color:#198754;">
+                <div class="card-body">
+                  <div class="d-flex mb-3">
+                    <div class="icon-solid me-3 text-success">
+                      <i class="bi bi-person-check-fill"></i>
+                    </div>
+                    <h5>3️⃣ Accountability</h5>
+                  </div>
+
+                  <span class="badge bg-success mb-2">Makna</span>
+                  <p>
+                    Berani mengakui hasil kerja sendiri dan bertanggung jawab atas keputusan serta tindakan yang diambil.
+                  </p>
+
+                  <span class="badge bg-success mb-2">Indikator Perilaku</span>
+                  <ul>
+                    <li>Mengakui kesalahan tanpa menyalahkan pihak lain</li>
+                    <li>Bertanggung jawab atas hasil pekerjaan</li>
+                    <li>Menindaklanjuti masalah sampai jelas</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- 4. ETIKA PROFESIONAL -->
+            <div class="col-md-6">
+              <div class="card card-solid h-100" style="border-left-color:#198754;">
+                <div class="card-body">
+                  <div class="d-flex mb-3">
+                    <div class="icon-solid me-3 text-success">
+                      <i class="bi bi-award-fill"></i>
+                    </div>
+                    <h5>4️⃣ Etika Profesional (Professional Ethics)</h5>
+                  </div>
+
+                  <span class="badge bg-success mb-2">Makna</span>
+                  <p>Menjaga standar etika dalam berinteraksi dan bekerja.</p>
+
+                  <span class="badge bg-success mb-2">Indikator Perilaku</span>
+                  <ul>
+                    <li>Tidak menyalahgunakan wewenang</li>
+                    <li>Menjaga kerahasiaan perusahaan</li>
+                    <li>Bertindak sesuai nilai perusahaan</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <!-- MODAL FOOTER -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          <i class="bi bi-x-circle"></i> Tutup
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ================= MODAL ADAPTIF ================= -->
+<!-- MODAL KPI ADAPTIVE -->
+<div class="modal fade" id="modalAdaptive" tabindex="-1" aria-labelledby="modalAdaptiveLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+
+      <!-- MODAL HEADER -->
+      <div class="modal-header bg-warning text-dark">
+        <h5 class="modal-title" id="modalAdaptiveLabel">
+          <i class="bi bi-arrow-repeat me-2"></i> KPI Budaya ADAPTIVE
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- MODAL BODY -->
+      <div class="modal-body" style="background:#f4f6f9;">
+        <div class="container-fluid">
+          <div class="row g-4">
+
+            <!-- 1. FLEXIBILITY -->
+            <div class="col-md-6">
+              <div class="card card-solid h-100" style="border-left-color:#ffc107;">
+                <div class="card-body">
+                  <div class="d-flex mb-3">
+                    <div class="icon-solid me-3 text-warning">
+                      <i class="bi bi-sliders"></i>
+                    </div>
+                    <h5>1️⃣ Flexibility</h5>
+                  </div>
+
+                  <span class="badge bg-warning text-dark mb-2">Makna</span>
+                  <p>
+                    Kemampuan menyesuaikan cara kerja, sikap, dan pendekatan terhadap perubahan situasi dan kebutuhan pekerjaan.
+                  </p>
+
+                  <span class="badge bg-success mb-2">Indikator Perilaku</span>
+                  <ul>
+                    <li>Bersedia menerima perubahan tugas atau metode kerja</li>
+                    <li>Tidak kaku terhadap aturan teknis yang bersifat situasional</li>
+                    <li>Cepat menyesuaikan diri dengan kondisi lapangan</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- 2. LEARNING AGILITY -->
+            <div class="col-md-6">
+              <div class="card card-solid h-100" style="border-left-color:#ffc107;">
+                <div class="card-body">
+                  <div class="d-flex mb-3">
+                    <div class="icon-solid me-3 text-warning">
+                      <i class="bi bi-lightning-charge-fill"></i>
+                    </div>
+                    <h5>2️⃣ Learning Agility</h5>
+                  </div>
+
+                  <span class="badge bg-warning text-dark mb-2">Makna</span>
+                  <p>
+                    Kemauan dan kecepatan belajar hal baru untuk meningkatkan kinerja.
+                  </p>
+
+                  <span class="badge bg-success mb-2">Indikator Perilaku</span>
+                  <ul>
+                    <li>Cepat memahami proses atau sistem baru</li>
+                    <li>Mau belajar dari kesalahan</li>
+                    <li>Terbuka terhadap feedback dan pembaruan</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- 3. PROBLEM SOLVING -->
+            <div class="col-md-6">
+              <div class="card card-solid h-100" style="border-left-color:#ffc107;">
+                <div class="card-body">
+                  <div class="d-flex mb-3">
+                    <div class="icon-solid me-3 text-warning">
+                      <i class="bi bi-puzzle-fill"></i>
+                    </div>
+                    <h5>3️⃣ Problem Solving</h5>
+                  </div>
+
+                  <span class="badge bg-warning text-dark mb-2">Makna</span>
+                  <p>
+                    Kemampuan mencari solusi efektif dalam situasi berubah atau tidak ideal.
+                  </p>
+
+                  <span class="badge bg-success mb-2">Indikator Perilaku</span>
+                  <ul>
+                    <li>Tidak panik saat terjadi kendala</li>
+                    <li>Mencari solusi alternatif</li>
+                    <li>Mengambil keputusan sesuai kondisi lapangan</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- 4. ENDURANCE -->
+            <div class="col-md-6">
+              <div class="card card-solid h-100" style="border-left-color:#ffc107;">
+                <div class="card-body">
+                  <div class="d-flex mb-3">
+                    <div class="icon-solid me-3 text-warning">
+                      <i class="bi bi-activity"></i>
+                    </div>
+                    <h5>4️⃣ Endurance</h5>
+                  </div>
+
+                  <span class="badge bg-warning text-dark mb-2">Makna</span>
+                  <p>
+                    Kemampuan tetap produktif dan positif meskipun menghadapi tekanan, perubahan, atau hambatan.
+                  </p>
+
+                  <span class="badge bg-success mb-2">Indikator Perilaku</span>
+                  <ul>
+                    <li>Tetap fokus saat kondisi sulit</li>
+                    <li>Tidak mudah menyerah</li>
+                    <li>Mampu bangkit setelah kegagalan</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- MODAL FOOTER -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          <i class="bi bi-x-circle"></i> Tutup
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+<!-- ================= MODAL PROFESIONAL ================= -->
+
+<!-- MODAL KPI PROFESSIONALISM -->
+<div class="modal fade" id="modalProfessionalism" tabindex="-1" aria-labelledby="modalProfessionalismLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+
+      <!-- MODAL HEADER -->
+      <div class="modal-header" style="background:#6f42c1;color:#fff;">
+        <h5 class="modal-title" id="modalProfessionalismLabel">
+          <i class="bi bi-briefcase-fill me-2"></i> KPI Budaya PROFESSIONALISM
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- MODAL BODY -->
+      <div class="modal-body" style="background:#f4f6f9;">
+        <div class="container-fluid">
+          <div class="row g-4">
+
+            <!-- 1. COMPETENCE -->
+            <div class="col-md-6">
+              <div class="card card-solid h-100" style="border-left-color:#6f42c1;">
+                <div class="card-body">
+                  <div class="d-flex mb-3">
+                    <div class="icon-solid me-3" style="color:#6f42c1;">
+                      <i class="bi bi-mortarboard-fill"></i>
+                    </div>
+                    <h5>1️⃣ Competence</h5>
+                  </div>
+
+                  <span class="badge mb-2" style="background:#6f42c1;">Makna</span>
+                  <p>
+                    Kemampuan, pengetahuan, dan keterampilan yang sesuai dengan peran dan tuntutan pekerjaan.
+                  </p>
+
+                  <span class="badge bg-success mb-2">Indikator Perilaku</span>
+                  <ul>
+                    <li>Menguasai tugas dan proses kerja</li>
+                    <li>Mampu bekerja sesuai standar teknis</li>
+                    <li>Hasil kerja akurat dan efektif</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- 2. WORK QUALITY -->
+            <div class="col-md-6">
+              <div class="card card-solid h-100" style="border-left-color:#6f42c1;">
+                <div class="card-body">
+                  <div class="d-flex mb-3">
+                    <div class="icon-solid me-3" style="color:#6f42c1;">
+                      <i class="bi bi-check2-square"></i>
+                    </div>
+                    <h5>2️⃣ Work Quality</h5>
+                  </div>
+
+                  <span class="badge mb-2" style="background:#6f42c1;">Makna</span>
+                  <p>
+                    Konsistensi menghasilkan pekerjaan yang rapi, teliti, dan sesuai standar mutu.
+                  </p>
+
+                  <span class="badge bg-success mb-2">Indikator Perilaku</span>
+                  <ul>
+                    <li>Minim kesalahan / rework</li>
+                    <li>Hasil kerja rapi dan lengkap</li>
+                    <li>Fokus pada kualitas hasil</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- 3. WORK DISCIPLINE -->
+            <div class="col-md-6">
+              <div class="card card-solid h-100" style="border-left-color:#6f42c1;">
+                <div class="card-body">
+                  <div class="d-flex mb-3">
+                    <div class="icon-solid me-3" style="color:#6f42c1;">
+                      <i class="bi bi-clock-fill"></i>
+                    </div>
+                    <h5>3️⃣ Work Discipline</h5>
+                  </div>
+
+                  <span class="badge mb-2" style="background:#6f42c1;">Makna</span>
+                  <p>
+                    Kepatuhan terhadap waktu kerja, target, dan ketentuan operasional.
+                  </p>
+
+                  <span class="badge bg-success mb-2">Indikator Perilaku</span>
+                  <ul>
+                    <li>Tepat waktu dalam bekerja</li>
+                    <li>Menyelesaikan pekerjaan sesuai target</li>
+                    <li>Konsisten mengikuti ketentuan kerja</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- 4. COMMUNICATION EFFECTIVENESS -->
+            <div class="col-md-6">
+              <div class="card card-solid h-100" style="border-left-color:#6f42c1;">
+                <div class="card-body">
+                  <div class="d-flex mb-3">
+                    <div class="icon-solid me-3" style="color:#6f42c1;">
+                      <i class="bi bi-chat-dots-fill"></i>
+                    </div>
+                    <h5>4️⃣ Communication Effectiveness</h5>
+                  </div>
+
+                  <span class="badge mb-2" style="background:#6f42c1;">Makna</span>
+                  <p>
+                    Kemampuan menyampaikan informasi pekerjaan secara jelas, tepat, dan profesional.
+                  </p>
+
+                  <span class="badge bg-success mb-2">Indikator Perilaku</span>
+                  <ul>
+                    <li>Informasi kerja jelas dan tidak ambigu</li>
+                    <li>Koordinasi efektif dengan tim/atasan</li>
+                    <li>Menghindari miskomunikasi kerja</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- MODAL FOOTER -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          <i class="bi bi-x-circle"></i> Tutup
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ================= MODAL WORKLOAD APP================= -->
+<!-- Modal -->
+<div class="modal fade" id="kpiModal" tabindex="-1" aria-labelledby="kpiModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="kpiModalLabel">Workload Berdasarkan Aplikasi</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+
+        <!-- 1. PRODUKTIVITAS -->
+        <div class="card mb-3">
+          <div class="card-body">
+            <h5 class="card-title">1. Produktivitas / Volume Kerja</h5>
+            <div class="kriteria-box"><i class="bi bi-clock" style="font-size: 1rem; color:#0d6efd;"></i>
+Timecard/Headquarter → jam kerja efektif (misal 8 jam benar-benar produktif)</div>
+            <div class="kriteria-box"><i class="bi bi-car-front" style="font-size: 1rem; color:#198754;"></i>
+Driver/McEasy → jumlah trip / pengiriman selesai sesuai target</div>
+            <div class="kriteria-box"><i class="bi bi-wrench" style="font-size: 1rem; color:#fd7e14;"></i>
+Teknisi-FLM/Savina → jumlah tiket / pekerjaan lapangan diselesaikan sesuai jadwal</div>
+
+            <input type="range" class="form-range mt-3" min="0" max="100" step="1" id="nilai1" value="75" oninput="hitungTotal()">
+            Nilai: <span class="slider-value" id="val1">75</span>
+          </div>
+        </div>
+
+        <!-- 2. KUALITAS -->
+        <div class="card mb-3">
+          <div class="card-body">
+            <h5 class="card-title">2. Kualitas & Akurasi</h5>
+            <div class="kriteria-box"><i class="bi bi-clock" style="font-size: 1rem; color:#0d6efd;"></i> Timecard/Headquarter → data yang dicatat benar, tidak ada manipulasi</div>
+            <div class="kriteria-box"><i class="bi bi-car-front" style="font-size: 1rem; color:#198754;"></i> Driver/McEasy → pengiriman tepat alamat, catatan perjalanan benar</div>
+            <div class="kriteria-box"><i class="bi bi-wrench" style="font-size: 1rem; color:#fd7e14;"></i> Teknisi-FLM/Savina → laporan pekerjaan akurat, tidak ada kesalahan servis</div>
+
+            <input type="range" class="form-range mt-3" min="0" max="100" step="1" id="nilai2" value="75" oninput="hitungTotal()">
+            Nilai: <span class="slider-value" id="val2">75</span>
+          </div>
+        </div>
+
+        <!-- 3. KECEPATAN -->
+        <div class="card mb-3">
+          <div class="card-body">
+            <h5 class="card-title">3. Kecepatan & Efisiensi</h5>
+            <div class="kriteria-box"><i class="bi bi-clock" style="font-size: 1rem; color:#0d6efd;"></i> Timecard/Headquarter → cepat dan tepat mengisi data harian</div>
+            <div class="kriteria-box"><i class="bi bi-car-front" style="font-size: 1rem; color:#198754;"></i> Driver/McEasy → waktu perjalanan sesuai estimasi, tidak ada delay yang tidak perlu</div>
+            <div class="kriteria-box"><i class="bi bi-wrench" style="font-size: 1rem; color:#fd7e14;"></i> Teknisi-FLM/Savina → waktu respon lapangan vs SLA, penyelesaian cepat</div>
+
+            <input type="range" class="form-range mt-3" min="0" max="100" step="1" id="nilai3" value="75" oninput="hitungTotal()">
+            Nilai: <span class="slider-value" id="val3">75</span>
+          </div>
+        </div>
+
+        <!-- 4. KEPATUHAN -->
+        <div class="card mb-3">
+          <div class="card-body">
+            <h5 class="card-title">4. Kepatuhan Prosedur & SOP</h5>
+            <div class="kriteria-box"><i class="bi bi-clock" style="font-size: 1rem; color:#0d6efd;"></i>  Timecard/Headquarter → pengisian sesuai aturan HR</div>
+            <div class="kriteria-box"><i class="bi bi-car-front" style="font-size: 1rem; color:#198754;"></i> Driver/McEasy → mengikuti rute / protokol keamanan</div>
+            <div class="kriteria-box"><i class="bi bi-wrench" style="font-size: 1rem; color:#fd7e14;"></i> Teknisi-FLM/Savina → mengikuti langkah servis sesuai SOP</div>
+            <div class="kriteria-box"><i class="bi bi-phone" style="font-size: 1rem; color:#fd7e14;"></i> Custody/SOA Mobile → mengikuti aturan pengisian Cash ATM </div>
+
+            <input type="range" class="form-range mt-3" min="0" max="100" step="1" id="nilai4" value="75" oninput="hitungTotal()">
+            Nilai: <span class="slider-value" id="val4">75</span>
+          </div>
+        </div>
+
+        <!-- TOTAL -->
+        <div class="alert alert-primary text-center">
+          <h5>Total Nilai (Rata-rata)</h5>
+          <div class="total-box" id="totalNilai">75.00</div>
+          <button class="btn btn-outline-dark btn-sm mt-2" onclick="copyTotal()">📋 Copy Nilai</button>
+          <div id="copyInfo" class="text-success mt-1" style="display:none;">✔ Nilai berhasil disalin</div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+        <button class="btn btn-outline-danger btn-sm mt-2 ms-2" onclick="resetNilai()">
+  🔄 Reset Nilai
+</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal Simple -->
+<div class="modal fade" id="successModal">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body text-center p-5">
+        <i class="bi bi-check-circle-fill text-success" style="font-size: 4rem;"></i>
+        <h4 class="mt-3">Berhasil Disimpan!</h4>
+        <p>Data KPI telah disimpan ke database.</p>
+        <button class="btn btn-success mt-2" data-bs-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+/* =========================================================
+   CONFIG
+========================================================= */
+const API_URL = "https://script.google.com/macros/s/AKfycbwWJlhlAIPNLxyWhVPL_0fq8ydHNCS5nbNK5-VhdM2psEq8iyQD4uYQ6guw8hSPixey/exec";
+
+
+/* =========================================================
+   HELPER
+========================================================= */
+const num = v => Number(v || 0);
+
+function sync(numEl, rangeEl, viewEl){
+  numEl.addEventListener("input", () => {
+    rangeEl.value = numEl.value;
+    if(viewEl) viewEl.innerText = numEl.value;
+  });
+  rangeEl.addEventListener("input", () => {
+    numEl.value = rangeEl.value;
+    if(viewEl) viewEl.innerText = rangeEl.value;
+  });
+}
+
+/* =========================================================
+   OUTPUT
+========================================================= */
+const solidNum       = document.getElementById("solid");
+const integrityNum   = document.getElementById("integrity");
+const adaptifNum     = document.getElementById("adaptif");
+const profesionalNum = document.getElementById("profesional");
+
+const vSolid       = document.getElementById("vSolid");
+const vIntegrity   = document.getElementById("vIntegrity");
+const vAdaptif     = document.getElementById("vAdaptif");
+const vProfesional = document.getElementById("vProfesional");
+
+/* =========================================================
+   SOLID
+========================================================= */
+const solidFields = [
+  solidTeam, solidKolab, solidHarmony, solidRespect
+];
+const solidRanges = [
+  solidTeamRange, solidKolabRange, solidHarmonyRange, solidRespectRange
+];
+
+solidFields.forEach((el,i)=>sync(el, solidRanges[i]));
+
+function hitungSolid(){
+  const rata = (solidFields.reduce((a,b)=>a+num(b.value),0)/4).toFixed(2);
+  solidNum.value = rata;
+  vSolid.innerText = rata;
+}
+[...solidFields, ...solidRanges].forEach(el=>el.addEventListener("input",hitungSolid));
+
+/* =========================================================
+   INTEGRITY
+========================================================= */
+const integrityFields = [
+  intHonesty, intCompliance, intAccount, intEtika
+];
+const integrityRanges = [
+  intHonestyRange, intComplianceRange, intAccountRange, intEtikaRange
+];
+
+integrityFields.forEach((el,i)=>sync(el, integrityRanges[i]));
+
+function hitungIntegrity(){
+  const rata = (integrityFields.reduce((a,b)=>a+num(b.value),0)/4).toFixed(2);
+  integrityNum.value = rata;
+  vIntegrity.innerText = rata;
+}
+[...integrityFields, ...integrityRanges].forEach(el=>el.addEventListener("input",hitungIntegrity));
+
+/* =========================================================
+   ADAPTIF
+========================================================= */
+const adaptifFields = [
+  adFlex, adAgile, adProblem, adEndurance
+];
+const adaptifRanges = [
+  adFlexRange, adAgileRange, adProblemRange, adEnduranceRange
+];
+
+adaptifFields.forEach((el,i)=>sync(el, adaptifRanges[i]));
+
+function hitungAdaptif(){
+  const rata = (adaptifFields.reduce((a,b)=>a+num(b.value),0)/4).toFixed(2);
+  adaptifNum.value = rata;
+  vAdaptif.innerText = rata;
+}
+[...adaptifFields, ...adaptifRanges].forEach(el=>el.addEventListener("input",hitungAdaptif));
+
+/* =========================================================
+   PROFESSIONAL
+========================================================= */
+const profesionalFields = [
+  proCompetency, proQuality, proDiscipline, proCommunication
+];
+const profesionalRanges = [
+  proCompetencyRange, proQualityRange, proDisciplineRange, proCommunicationRange
+];
+
+profesionalFields.forEach((el,i)=>sync(el, profesionalRanges[i]));
+
+function hitungProfesional(){
+  const rata = (profesionalFields.reduce((a,b)=>a+num(b.value),0)/4).toFixed(2);
+  profesionalNum.value = rata;
+  vProfesional.innerText = rata;
+}
+[...profesionalFields, ...profesionalRanges].forEach(el=>el.addEventListener("input",hitungProfesional));
+
+
+
+/* =========================================================
+   KPI TARGET, ABSENSI, WORKLOAD
+========================================================= */
+sync(targetUtama, targetUtamaRange, vTargetUtama);
+sync(targetProses, targetProsesRange, vTargetProses);
+sync(absensiNum, absensiRange, vAbsensi);
+sync(workloadNum, workloadRange, vWorkload);
+
+/* =========================================================
+   HITUNG TOTAL KPI
+========================================================= */
+function hitungTotal(){
+  const nilaiBudaya =
+    (num(solidNum.value)+num(integrityNum.value)+num(adaptifNum.value)+num(profesionalNum.value))/4 * 0.20;
+
+  const nilaiTarget =
+    (num(targetUtama.value)+num(targetProses.value))/2 * 0.50;
+
+  const nilaiPersonal =
+    (num(absensiNum.value)+num(workloadNum.value))/2 * 0.30;
+
+  return (nilaiBudaya+nilaiTarget+nilaiPersonal).toFixed(2);
+}
+
+
+/* =========================================================
+  HITUNG WORKLOAD BY APP
+========================================================= */
+
+function hitungTotal() {
+  let n1 = parseInt(nilai1.value);
+  let n2 = parseInt(nilai2.value);
+  let n3 = parseInt(nilai3.value);
+  let n4 = parseInt(nilai4.value);
+
+  val1.innerText = n1;
+  val2.innerText = n2;
+  val3.innerText = n3;
+  val4.innerText = n4;
+
+  let total = (n1 + n2 + n3 + n4) / 4;
+  totalNilai.innerText = total.toFixed(2);
+}
+
+function copyTotal() {
+  let text = document.getElementById("totalNilai").innerText;
+  navigator.clipboard.writeText(text);
+
+  copyInfo.style.display = "block";
+  setTimeout(() => {
+    copyInfo.style.display = "none";
+  }, 1500);
+}
+
+
+/* === FUNGSI RESET / REFRESH === */
+
+function resetNilai() {
+  nilai1.value = 0;
+  nilai2.value = 0;
+  nilai3.value = 0;
+  nilai4.value = 0;
+
+  val1.innerText = 0;
+  val2.innerText = 0;
+  val3.innerText = 0;
+  val4.innerText = 0;
+
+  totalNilai.innerText = "0.00";
+}
+
+
+
+/* =========================================================
+   SAVE DATA (DENGAN MODAL)
+========================================================= */
+function saveData(){
+  // Simpan data dulu ke variabel
+  const dataToSave = {
+    nama_penilai: document.getElementById("nama_penilai").value,
+    npp_penilai: document.getElementById("npp_penilai").value,
+    jabatan_penilai: document.getElementById("jabatan_penilai").value,
+    nama: document.getElementById("nama").value,
+    npp: document.getElementById("npp").value,
+    divisi: document.getElementById("divisi").value,
+    unit: document.getElementById("unit").value,
+    jabatan: document.getElementById("jabatan").value,
+    solid: solidNum.value,
+    integritas: integrityNum.value,
+    adaptif: adaptifNum.value,
+    profesional: profesionalNum.value,
+    targetUtama: document.getElementById("targetUtama").value,
+    targetProses: document.getElementById("targetProses").value,
+    absensi: document.getElementById("absensiNum").value,
+    workload: document.getElementById("workloadNum").value
+  };
+
+  // Kirim ke API
+  fetch(API_URL, {
+    method: "POST",
+    body: JSON.stringify(dataToSave)
+  })
+  .then(() => {
+    // Update print area
+    updatePrintArea();
+    
+    // Tampilkan modal sukses
+    const successModal = new bootstrap.Modal(document.getElementById('successModal'));
+    successModal.show();
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    alert("Gagal menyimpan data. Coba lagi.");
+  });
+}
+
+/* =========================================================
+   UPDATE PRINT AREA
+========================================================= */
+function updatePrintArea() {
+  document.getElementById("pNamaPenilai").innerText = document.getElementById("nama_penilai").value || "-";
+  document.getElementById("pNppPenilai").innerText = document.getElementById("npp_penilai").value || "-";
+  document.getElementById("pJabatanPenilai").innerText = document.getElementById("jabatan_penilai").value || "-";
+
+  document.getElementById("pNama").innerText = document.getElementById("nama").value || "-";
+  document.getElementById("pNpp").innerText = document.getElementById("npp").value || "-";
+  document.getElementById("pDivisi").innerText = document.getElementById("divisi").value || "-";
+  document.getElementById("pUnit").innerText = document.getElementById("unit").value || "-";
+  document.getElementById("pJabatan").innerText = document.getElementById("jabatan").value || "-";
+
+  document.getElementById("pSolid").innerText = solidNum.value || "0";
+  document.getElementById("pIntegritas").innerText = integrityNum.value || "0";
+  document.getElementById("pAdaptif").innerText = adaptifNum.value || "0";
+  document.getElementById("pProfesional").innerText = profesionalNum.value || "0";
+
+  document.getElementById("pTargetUtama").innerText = document.getElementById("targetUtama").value || "0";
+  document.getElementById("pTargetProses").innerText = document.getElementById("targetProses").value || "0";
+  document.getElementById("pAbsensi").innerText = document.getElementById("absensiNum").value || "0";
+  document.getElementById("pWorkload").innerText = document.getElementById("workloadNum").value || "0";
+
+  const totalKPI = hitungTotalKPI();
+  document.getElementById("pTotal").innerText = totalKPI;
+}
+
+
+function resetAccordion(){
+  document.querySelectorAll(".accordion-collapse").forEach(el=>{
+    el.classList.remove("show");
+  });
+
+  document.querySelectorAll(".accordion-button").forEach(btn=>{
+    btn.classList.add("collapsed");
+    btn.setAttribute("aria-expanded","false");
+  });
+}
+
+function resetForm(){
+
+  /* ================= DATA PEGAWAI ================= */
+  [nama_penilai,npp_penilai,jabatan_penilai,nama, npp, divisi, unit, jabatan].forEach(el=>{
+    if(el) el.value = "";
+  });
+
+  /* ================= RESET SEMUA INPUT ANGKA ================= */
+  document.querySelectorAll("input[type='number']").forEach(el=>{
+    el.value = 0;
+  });
+
+  /* ================= RESET SEMUA SLIDER ================= */
+  document.querySelectorAll("input[type='range']").forEach(el=>{
+    el.value = 0;
+  });
+
+  /* ================= RESET TAMPILAN NILAI ================= */
+  document.querySelectorAll(".slider-value").forEach(el=>{
+    el.innerText = "0";
+  });
+
+  /* ================= RESET ACCORDION ================= */
+  resetAccordion();
+
+  /* ================= SEMBUNYIKAN AREA CETAK ================= */
+  const printArea = document.getElementById("printArea");
+  if(printArea) printArea.classList.add("d-none");
+
+  /* ================= SCROLL KE ATAS ================= */
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+
+function getNumber(id) {
+  return parseFloat(document.getElementById(id).value) || 0;
+}
+
+function hitungTotalKPI() {
+  const solid        = getNumber("solid");
+  const integrity    = getNumber("integrity");
+  const adaptif      = getNumber("adaptif");
+  const profesional  = getNumber("profesional");
+
+  const targetUtama  = getNumber("targetUtama");
+  const targetProses = getNumber("targetProses");
+
+  const absensi      = getNumber("absensiNum");
+  const workload     = getNumber("workloadNum");
+
+  /* === BOBOT === */
+  const personality = (solid + integrity + adaptif + profesional) / 4 * 0.20;
+  const targetKerja = (targetUtama + targetProses) / 2 * 0.50;
+  const absensiVal  = absensi * 0.15;
+  const workloadVal = workload * 0.15;
+
+  const total = personality + targetKerja + absensiVal + workloadVal;
+
+  return total.toFixed(2);
+}
+
+
+/* ================= PRINT PDF  ================= */
+
+
+function printPDF() {
+
+  // === ISI DATA KE AREA CETAK ===
+  document.getElementById("pNamaPenilai").innerText = nama_penilai.value;
+  document.getElementById("pNppPenilai").innerText = npp_penilai.value;
+  document.getElementById("pJabatanPenilai").innerText = jabatan_penilai.value;
+
+  document.getElementById("pNama").innerText = nama.value;
+  document.getElementById("pNpp").innerText = npp.value;
+  document.getElementById("pDivisi").innerText = divisi.value;
+  document.getElementById("pUnit").innerText = unit.value;
+  document.getElementById("pJabatan").innerText = jabatan.value;
+
+  document.getElementById("pSolid").innerText = solid.value;
+  document.getElementById("pIntegritas").innerText = integrity.value;
+  document.getElementById("pAdaptif").innerText = adaptif.value;
+  document.getElementById("pProfesional").innerText = profesional.value;
+
+  document.getElementById("pTargetUtama").innerText = targetUtama.value;
+  document.getElementById("pTargetProses").innerText = targetProses.value;
+  document.getElementById("pAbsensi").innerText = absensiNum.value;
+  document.getElementById("pWorkload").innerText = workloadNum.value;
+
+  // === HITUNG TOTAL KPI (INI KUNCI) ===
+  const totalKPI = hitungTotalKPI();
+  document.getElementById("pTotal").innerText = totalKPI;
+
+  // === TAMPILKAN AREA PRINT ===
+  document.getElementById("printArea").classList.remove("d-none");
+
+  window.print();
+
+  // === SEMBUNYIKAN LAGI ===
+  document.getElementById("printArea").classList.add("d-none");
+}
+
+
+
+
+</script>
+
+
+</body>
+</html>
